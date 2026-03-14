@@ -1,17 +1,23 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hot Take Miner v2 — Visibility by Design</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Lato:ital,wght@0,300;0,400;1,300&display=swap');
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 :root{
   --p50:#EEEDFE;--p200:#AFA9EC;--p400:#7F77DD;--p600:#534AB7;--p800:#3C3489;
-  --pk400:#D4537E;--t400:#1D9E75;--b600:#185FA5;--a400:#BA7517;
+  --pk400:#D4537E;--pk50:#FBEAF0;--pk200:#ED93B1;
+  --t400:#1D9E75;--t50:#E1F5EE;--t200:#9FE1CB;
   --bg:#faf9ff;--surf:#ffffff;--surf2:#f4f2fd;
   --bdr:rgba(127,119,221,0.18);--bdr2:rgba(127,119,221,0.35);
   --tx:#1a1730;--txs:#5c5480;--txm:#9490b8;
 }
 body{background:var(--bg);color:var(--tx);font-family:'Lato',sans-serif;min-height:100vh;padding:0 0 80px;}
 body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 70% 50% at 15% 10%,rgba(175,169,236,0.18) 0%,transparent 60%),radial-gradient(ellipse 50% 60% at 85% 90%,rgba(212,83,126,0.08) 0%,transparent 60%);pointer-events:none;z-index:0;}
-.wrap{position:relative;z-index:1;max-width:780px;margin:0 auto;padding:0 20px 60px;}
+.wrap{position:relative;z-index:1;max-width:760px;margin:0 auto;padding:0 20px 60px;}
 
 .header{text-align:center;padding:40px 16px 28px;}
 .badge{display:inline-block;background:var(--p50);border:1px solid var(--p200);color:var(--p600);font-family:'Montserrat',sans-serif;font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;padding:5px 16px;border-radius:100px;margin-bottom:16px;}
@@ -19,285 +25,270 @@ h1{font-family:'Montserrat',sans-serif;font-size:clamp(24px,4.5vw,34px);font-wei
 h1 span{color:var(--p400);}
 .subtitle{font-size:14px;color:var(--txs);line-height:1.65;max-width:500px;margin:0 auto;font-weight:300;}
 
-.sec-label{font-family:'Montserrat',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--p400);margin-bottom:10px;}
+.intro-card{background:var(--pk50);border:1px solid var(--pk200);border-radius:16px;padding:18px 22px;margin-bottom:24px;}
+.intro-card p{font-size:13.5px;color:var(--pk400);line-height:1.65;}
+.intro-card strong{font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;letter-spacing:0.5px;display:block;margin-bottom:6px;color:var(--pk400);}
 
-.card{background:var(--surf);border:1px solid var(--bdr);border-radius:16px;padding:22px;margin-bottom:14px;box-shadow:0 2px 16px rgba(127,119,221,0.06);}
-.card-title{font-family:'Montserrat',sans-serif;font-size:13px;font-weight:700;color:var(--p600);margin-bottom:4px;}
-.card-desc{font-size:13px;color:var(--txs);line-height:1.55;margin-bottom:16px;font-style:italic;}
+.q-card{background:var(--surf);border:1px solid var(--bdr);border-radius:16px;padding:20px 22px;margin-bottom:12px;box-shadow:0 2px 14px rgba(127,119,221,0.05);transition:border-color 0.2s;}
+.q-card:focus-within{border-color:var(--p200);}
+.q-header{display:flex;align-items:flex-start;gap:12px;margin-bottom:10px;}
+.q-num{flex-shrink:0;width:26px;height:26px;border-radius:50%;background:var(--p50);border:1px solid var(--p200);display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:10px;font-weight:800;color:var(--p600);margin-top:1px;transition:all 0.2s;}
+.q-num.answered{background:var(--p400);border-color:var(--p400);color:#fff;}
+.q-content{flex:1;}
+.q-text{font-family:'Montserrat',sans-serif;font-size:14px;font-weight:700;color:var(--tx);line-height:1.35;margin-bottom:4px;}
+.q-why{font-size:12px;color:var(--txm);font-style:italic;line-height:1.5;margin-bottom:12px;}
+.q-card textarea{width:100%;background:var(--surf2);border:1px solid var(--bdr);border-radius:10px;padding:11px 14px;color:var(--tx);font-family:'Lato',sans-serif;font-size:13.5px;line-height:1.6;resize:vertical;min-height:80px;transition:border-color 0.18s;}
+.q-card textarea:focus{outline:none;border-color:var(--p400);background:var(--surf);}
+.q-card textarea::placeholder{color:var(--txm);}
+.q-skip{font-family:'Montserrat',sans-serif;font-size:10px;font-weight:700;color:var(--txm);letter-spacing:0.5px;margin-top:7px;display:inline-block;}
 
-/* Progress stepper */
-.stepper{display:flex;gap:6px;margin-bottom:24px;align-items:center;}
-.step-dot{width:28px;height:28px;border-radius:50%;border:1.5px solid var(--bdr2);background:var(--surf);display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:10px;font-weight:700;color:var(--txm);transition:all 0.2s;flex-shrink:0;}
-.step-dot.active{background:var(--p400);border-color:var(--p400);color:#fff;box-shadow:0 2px 10px rgba(127,119,221,0.35);}
-.step-dot.done{background:var(--t400);border-color:var(--t400);color:#fff;}
-.step-line{flex:1;height:1.5px;background:var(--bdr);border-radius:2px;}
-.step-line.done{background:var(--t400);}
+.mine-btn{width:100%;padding:16px;background:var(--pk400);color:#fff;font-family:'Montserrat',sans-serif;font-weight:900;font-size:15px;border:none;border-radius:14px;cursor:pointer;transition:all 0.18s;margin-top:8px;box-shadow:0 4px 20px rgba(212,83,126,0.28);}
+.mine-btn:hover{background:#b03068;transform:translateY(-1px);}
+.mine-btn:disabled{opacity:0.45;cursor:not-allowed;transform:none;box-shadow:none;}
+.answered-count{text-align:center;font-size:13px;color:var(--txs);margin-top:10px;font-style:italic;}
 
-/* Question card */
-.q-number{font-family:'Montserrat',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;color:var(--p400);text-transform:uppercase;margin-bottom:6px;}
-.q-text{font-family:'Montserrat',sans-serif;font-size:16px;font-weight:700;color:var(--tx);margin-bottom:6px;line-height:1.35;}
-.q-why{font-size:12.5px;color:var(--txs);font-style:italic;margin-bottom:16px;line-height:1.5;}
-.field-group{display:flex;flex-direction:column;gap:5px;}
-.field-group label{font-family:'Montserrat',sans-serif;font-size:10px;font-weight:700;letter-spacing:0.5px;color:var(--txm);text-transform:uppercase;}
-.field-group textarea{width:100%;background:var(--surf2);border:1px solid var(--bdr);border-radius:10px;padding:12px 14px;color:var(--tx);font-family:'Lato',sans-serif;font-size:14px;line-height:1.6;transition:border-color 0.18s;resize:vertical;min-height:90px;}
-.field-group textarea:focus{outline:none;border-color:var(--p400);background:var(--surf);}
-.field-group textarea::placeholder{color:var(--txm);}
+.loading-dots{display:flex;gap:7px;justify-content:center;padding:40px 0;}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--pk200);animation:dp 1.2s infinite;}
+.dot:nth-child(2){animation-delay:0.2s;}.dot:nth-child(3){animation-delay:0.4s;}
+@keyframes dp{0%,100%{opacity:0.3;transform:scale(0.8);}50%{opacity:1;transform:scale(1);}}
 
-/* Nav buttons */
-.btn-row{display:flex;gap:10px;margin-top:16px;}
-.btn-back{flex:0 0 auto;padding:11px 20px;background:var(--surf2);border:1px solid var(--bdr);border-radius:10px;color:var(--txs);font-family:'Montserrat',sans-serif;font-weight:700;font-size:12px;cursor:pointer;transition:all 0.18s;}
-.btn-back:hover{border-color:var(--p200);color:var(--p600);}
-.btn-next{flex:1;padding:12px;background:var(--p400);color:#fff;border:none;border-radius:10px;font-family:'Montserrat',sans-serif;font-weight:800;font-size:13px;cursor:pointer;transition:all 0.18s;box-shadow:0 4px 16px rgba(127,119,221,0.28);}
-.btn-next:hover{background:var(--p600);}
-.btn-next:disabled{opacity:0.45;cursor:not-allowed;box-shadow:none;}
-.btn-mine{width:100%;padding:15px;background:var(--p400);color:#fff;border:none;border-radius:14px;font-family:'Montserrat',sans-serif;font-weight:800;font-size:14px;cursor:pointer;transition:all 0.18s;margin-top:16px;box-shadow:0 4px 20px rgba(127,119,221,0.3);}
-.btn-mine:hover{background:var(--p600);}
-.btn-mine:disabled{opacity:0.5;cursor:not-allowed;box-shadow:none;}
+.results-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;}
+.results-header h2{font-family:'Montserrat',sans-serif;font-size:18px;font-weight:900;color:var(--tx);}
+.action-row{display:flex;gap:8px;flex-wrap:wrap;}
+.action-btn{padding:8px 16px;border-radius:100px;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;cursor:pointer;transition:all 0.18s;border:1px solid;}
+.btn-save{background:var(--t50);border-color:var(--t200);color:var(--t400);}
+.btn-save:hover{background:var(--t200);}
+.btn-save.saved{background:var(--t400);color:#fff;border-color:var(--t400);}
+.btn-dl{background:var(--p50);border-color:var(--p200);color:var(--p600);}
+.btn-dl:hover{background:var(--p200);}
+.btn-remine{background:var(--pk50);border-color:var(--pk200);color:var(--pk400);}
+.btn-remine:hover{background:var(--pk200);}
 
-/* Loading */
-.loading-dots{display:flex;gap:7px;justify-content:center;padding:28px 0;}
-.dot{width:9px;height:9px;border-radius:50%;background:var(--p200);animation:dotpulse 1.2s infinite;}
-.dot:nth-child(2){animation-delay:0.2s;}
-.dot:nth-child(3){animation-delay:0.4s;}
-@keyframes dotpulse{0%,100%{opacity:0.3;transform:scale(0.8);}50%{opacity:1;transform:scale(1);}}
-
-/* Results */
-.results-intro{font-size:14px;color:var(--txs);line-height:1.6;margin-bottom:20px;}
-.take-card{background:var(--surf);border:1px solid var(--bdr);border-radius:14px;overflow:hidden;margin-bottom:14px;box-shadow:0 2px 12px rgba(127,119,221,0.07);}
-.take-header{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--bdr);background:var(--p50);}
-.take-rank{font-family:'Montserrat',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;color:var(--p600);text-transform:uppercase;}
-.take-heat{font-size:13px;}
+.take-card{background:var(--surf);border:1px solid var(--bdr);border-radius:14px;margin-bottom:12px;overflow:hidden;box-shadow:0 2px 12px rgba(127,119,221,0.06);}
+.take-top{display:flex;align-items:center;justify-content:space-between;padding:12px 18px;background:var(--p50);border-bottom:1px solid var(--bdr);}
+.take-rank-row{display:flex;align-items:center;gap:10px;}
+.take-rank{font-family:'Montserrat',sans-serif;font-size:10px;font-weight:800;letter-spacing:1.5px;color:var(--p600);text-transform:uppercase;}
+.take-heat{font-size:14px;}
+.take-meta{font-family:'Montserrat',sans-serif;font-size:10px;color:var(--txm);font-weight:600;}
 .take-body{padding:16px 18px;}
-.take-label{font-family:'Montserrat',sans-serif;font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--txm);margin-bottom:5px;}
-.take-text{font-size:14px;color:var(--tx);line-height:1.65;margin-bottom:14px;}
-.take-text:last-child{margin-bottom:0;}
-.take-label.hook-lbl{color:var(--pk400);}
-.take-label.why-lbl{color:var(--p600);}
-.take-label.format-lbl{color:var(--t400);}
 
-/* Use in Skool section */
-.skool-section{margin-top:28px;}
-.skool-tabs{display:flex;gap:8px;margin-bottom:16px;}
-.skool-tab{padding:8px 16px;border-radius:100px;border:1px solid var(--bdr);background:var(--surf2);font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;color:var(--txs);cursor:pointer;transition:all 0.18s;}
-.skool-tab.active{background:var(--p50);border-color:var(--p400);color:var(--p600);}
-.skool-panel{display:none;}
-.skool-panel.active{display:block;}
-.skool-template{background:var(--surf);border:1px solid var(--bdr);border-radius:12px;padding:18px;margin-bottom:12px;}
-.skool-template h4{font-family:'Montserrat',sans-serif;font-size:12px;font-weight:700;color:var(--p600);margin-bottom:8px;}
-.skool-template p{font-size:13px;color:var(--txs);line-height:1.6;margin-bottom:10px;}
-.template-box{background:var(--surf2);border:1px solid var(--bdr);border-radius:8px;padding:14px;font-size:13px;color:var(--tx);line-height:1.7;white-space:pre-wrap;font-family:'Lato',sans-serif;}
-.copy-small{display:inline-block;margin-top:8px;padding:4px 12px;background:var(--p50);border:1px solid var(--p200);border-radius:100px;font-family:'Montserrat',sans-serif;font-size:10px;font-weight:700;color:var(--p600);cursor:pointer;transition:all 0.15s;}
-.copy-small:hover{background:var(--p200);}
+.take-edit-wrap{margin-bottom:14px;}
+.take-edit-label{font-family:'Montserrat',sans-serif;font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--p400);margin-bottom:6px;display:flex;align-items:center;gap:6px;}
+.edit-hint{font-size:10px;color:var(--txm);font-weight:400;letter-spacing:0;font-style:italic;font-family:'Lato',sans-serif;}
+.take-textarea{width:100%;background:var(--surf2);border:1px solid var(--bdr);border-radius:8px;padding:10px 13px;color:var(--tx);font-family:'Lato',sans-serif;font-size:14px;line-height:1.65;resize:vertical;min-height:64px;transition:border-color 0.18s;}
+.take-textarea:focus{outline:none;border-color:var(--p400);background:var(--surf);}
 
-/* Script Studio CTA */
-.studio-cta{background:linear-gradient(135deg,var(--p50) 0%,#fbeaf0 100%);border:1px solid var(--p200);border-radius:14px;padding:20px;margin-top:20px;text-align:center;}
-.studio-cta h3{font-family:'Montserrat',sans-serif;font-size:14px;font-weight:800;color:var(--p600);margin-bottom:6px;}
-.studio-cta p{font-size:13px;color:var(--txs);margin-bottom:14px;line-height:1.5;}
-.take-select{width:100%;background:var(--surf);border:1px solid var(--bdr2);border-radius:10px;padding:10px 13px;color:var(--tx);font-family:'Lato',sans-serif;font-size:13px;margin-bottom:12px;}
-.btn-studio{padding:12px 28px;background:var(--pk400);color:#fff;border:none;border-radius:10px;font-family:'Montserrat',sans-serif;font-weight:800;font-size:13px;cursor:pointer;transition:all 0.18s;box-shadow:0 4px 16px rgba(212,83,126,0.28);}
-.btn-studio:hover{background:#b03068;}
+.take-field{margin-bottom:10px;}
+.field-lbl{font-family:'Montserrat',sans-serif;font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;}
+.lbl-hook{color:var(--pk400);}
+.lbl-why{color:var(--p600);}
+.lbl-fmt{color:var(--t400);}
+.field-val{font-size:13px;color:var(--txs);line-height:1.6;}
+
+.script-btn{display:inline-block;margin-top:6px;padding:6px 16px;background:var(--p50);border:1px solid var(--p200);border-radius:100px;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;color:var(--p600);cursor:pointer;transition:all 0.15s;}
+.script-btn:hover{background:var(--p200);}
+
+.saved-banner{background:var(--t50);border:1px solid var(--t200);border-radius:10px;padding:12px 16px;margin-bottom:16px;font-size:13px;color:var(--t400);line-height:1.5;display:none;}
+.saved-banner.visible{display:block;}
 
 .error-box{background:#fff5f5;border:1px solid #f7c1c1;color:#a32d2d;padding:12px 16px;border-radius:10px;font-size:13px;margin-top:12px;}
-.progress-text{font-size:13px;color:var(--txs);margin-bottom:16px;font-style:italic;}
+
+.restore-bar{background:var(--t50);border:1px solid var(--t200);border-radius:12px;padding:14px 18px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+.restore-bar p{font-size:13px;color:var(--t400);line-height:1.5;flex:1;}
+.restore-bar strong{font-family:'Montserrat',sans-serif;}
+.btn-restore{padding:8px 18px;background:var(--t400);color:#fff;border:none;border-radius:8px;font-family:'Montserrat',sans-serif;font-weight:700;font-size:12px;cursor:pointer;}
+.btn-clear{padding:8px 12px;background:transparent;border:1px solid var(--t200);border-radius:8px;font-family:'Montserrat',sans-serif;font-weight:700;font-size:11px;color:var(--txm);cursor:pointer;}
 </style>
+</head>
+<body>
 
 <div class="wrap">
   <div class="header">
     <div class="badge">✦ Visibility by Design · Day 4</div>
     <h1>🔥 Hot Take <span>Miner</span></h1>
-    <p class="subtitle">Answer 7 quick questions to excavate the scroll-stopping opinions already living inside you. Your hot takes are in there — let's dig them out.</p>
+    <p class="subtitle">7 excavation questions — answer the ones that spark something, skip the rest. Your hot takes are already inside you.</p>
   </div>
 
-  <div id="mainArea"></div>
+  <div id="restoreBar" style="display:none" class="restore-bar">
+    <p>✦ <strong>You have saved hot takes from a previous session.</strong> Want to pick up where you left off?</p>
+    <div style="display:flex;gap:8px;">
+      <button class="btn-restore" onclick="restoreSaved()">View saved takes</button>
+      <button class="btn-clear" onclick="clearSaved()">Start fresh</button>
+    </div>
+  </div>
+
+  <div id="miningView">
+    <div class="intro-card">
+      <strong>How this works</strong>
+      <p>Read through all 7 questions below. Write in the ones that trigger something — a strong reaction, a rant you've been holding back, something you've said to a client a hundred times. <em>You don't have to answer all 7.</em> The more honest your answers, the better your hot takes will be.</p>
+    </div>
+
+    <div id="questionsArea"></div>
+
+    <button class="mine-btn" id="mineBtn" onclick="mine()" disabled>🔥 Surface my hot takes</button>
+    <p class="answered-count" id="answeredCount">Answer at least 1 question to begin</p>
+    <div id="mineError"></div>
+  </div>
+
+  <div id="resultsView" style="display:none">
+    <div class="saved-banner" id="savedBanner">✦ Your hot takes have been saved to this browser. Come back any time and they'll be here waiting.</div>
+    <div class="results-header">
+      <h2>Your Hot Take Bank 🔥</h2>
+      <div class="action-row">
+        <button class="action-btn btn-save" id="saveBtn" onclick="saveTakes()">💾 Save to browser</button>
+        <button class="action-btn btn-dl" onclick="downloadTakes()">⬇ Download</button>
+        <button class="action-btn btn-remine" onclick="goBack()">← Mine again</button>
+      </div>
+    </div>
+    <p style="font-size:13px;color:var(--txs);margin-bottom:20px;line-height:1.6;">Edit any take below to make it sound more like you — then save or download your full bank.</p>
+    <div id="takesArea"></div>
+  </div>
 </div>
 
 <script>
+const STORAGE_KEY = 'vbd_hot_takes_bank';
+
 const questions = [
-  {
-    id:'obvious',
-    num:'Question 1 of 7',
-    text:'What do you believe about your niche that feels so obvious to you, you assume everyone already knows it?',
-    why:'The gap between what feels obvious to you and what your audience has never considered IS the hot take. Your "duh" is their breakthrough.',
-    placeholder:'e.g. Your Human Design type literally changes which platforms you should be on — Projectors should NOT be posting 3x a day...',
-  },
-  {
-    id:'eyeroll',
-    num:'Question 2 of 7',
-    text:'What advice do you see given in your industry that makes you cringe or roll your eyes?',
-    why:'That friction is your take. When you see something and think "that\'s wrong" — that\'s content gold.',
-    placeholder:'e.g. "Just be consistent" is the laziest advice ever given to spiritual entrepreneurs who are already burning out...',
-  },
-  {
-    id:'dinner',
-    num:'Question 3 of 7',
-    text:'What would you say about your industry to a friend over dinner that you\'d never post publicly?',
-    why:'The Rebecca Ives rule: writers tell the truth. The thing you\'d say privately but wouldn\'t post? That\'s the one to post.',
-    placeholder:'e.g. Most spiritual coaches are broke because they\'re so focused on alignment they\'ve convinced themselves that selling is masculine energy...',
-  },
-  {
-    id:'broken',
-    num:'Question 4 of 7',
-    text:'What do you keep having to correct or undo with every new client who comes to you?',
-    why:'If you\'re correcting the same belief over and over, that\'s a pattern — and naming it publicly is exactly what positions you as the authority.',
-    placeholder:'e.g. Every single client comes to me having followed someone else\'s niche advice and completely erased what made them interesting...',
-  },
-  {
-    id:'nobody',
-    num:'Question 5 of 7',
-    text:'What do most people in your space avoid talking about because it\'s uncomfortable or controversial?',
-    why:'"Nobody is talking about this" is the #1 highest-performing hook pattern — because it\'s usually TRUE. What\'s the elephant?',
-    placeholder:'e.g. Nobody talks about how much of "spiritual business" advice was created by Generators for Generators — and it\'s actively harming Projectors...',
-  },
-  {
-    id:'cost',
-    num:'Question 6 of 7',
-    text:'What did YOU used to believe before that you now know was wrong — and what did believing it cost you?',
-    why:'This is the Personal Cost Mine. Amanda\'s first viral TikTok was "That\'s why I\'m grateful I was a heroin addict." Your cost story is your most powerful take.',
-    placeholder:'e.g. I used to believe I had to water down the spiritual stuff to be taken seriously. That belief cost me 8 months of momentum and $20k...',
-  },
-  {
-    id:'refuse',
-    num:'Question 7 of 7',
-    text:'What industry "best practice" do you flat-out refuse to follow — and why?',
-    why:'"I refuse to [industry norm]" is a direct hook from your Verbal Hooks library. What rule do you break on purpose?',
-    placeholder:'e.g. I refuse to post every day. Projectors aren\'t built for volume — two deep, strategic pieces a week outperforms daily mediocrity...',
-  }
+  {id:'obvious', text:'What do you believe about your niche that feels so obvious to you, you assume everyone already knows it?', why:'The gap between what feels obvious to you and what your audience has never heard IS the hot take. Your "duh" is their breakthrough.', placeholder:'e.g. Your Human Design type literally changes which platforms you should be on — Projectors should NOT be posting 3x a day...'},
+  {id:'eyeroll', text:'What advice do you see given in your industry that makes you cringe or roll your eyes?', why:'That friction is your take. When you see something and think "that\'s wrong" — that\'s content gold.', placeholder:'e.g. "Just be consistent" is the laziest advice ever given to spiritual entrepreneurs who are already burning out...'},
+  {id:'dinner', text:'What would you say about your industry to a friend over dinner that you\'d never post publicly?', why:'The thing you\'d say privately but wouldn\'t post? That\'s the one to post. Writers tell the truth.', placeholder:'e.g. Most spiritual coaches are broke because they\'re so focused on alignment they\'ve convinced themselves that selling is masculine energy...'},
+  {id:'broken', text:'What do you keep having to correct or undo with every new client who comes to you?', why:'If you\'re correcting the same belief over and over, that\'s a pattern — and naming it publicly positions you as the authority.', placeholder:'e.g. Every single client comes to me having followed someone else\'s niche advice and completely erased what made them interesting...'},
+  {id:'nobody', text:'What do most people in your space avoid talking about because it\'s uncomfortable or controversial?', why:'"Nobody is talking about this" is the #1 highest-performing hook pattern — because it\'s usually TRUE. What\'s the elephant?', placeholder:'e.g. Nobody talks about how much "spiritual business" advice was created by Generators for Generators — and it\'s actively harming Projectors...'},
+  {id:'cost', text:'What did YOU used to believe before that you now know was wrong — and what did believing it cost you?', why:'This is your most powerful take. The personal cost story is what makes audiences stop scrolling and feel seen.', placeholder:'e.g. I used to believe I had to water down the spiritual stuff to be taken seriously. That belief cost me 8 months of momentum and $20k...'},
+  {id:'refuse', text:'What industry "best practice" do you flat-out refuse to follow — and why?', why:'"I refuse to [industry norm]" is one of the most powerful hook openers. What rule do you break on purpose?', placeholder:'e.g. I refuse to post every day. Projectors aren\'t built for volume — two deep, strategic pieces a week outperforms daily mediocrity...'},
 ];
 
-let currentQ = 0;
-let answers = {};
 let hotTakes = [];
-let skoolTab = 'community';
+let answeredIds = new Set();
 
-function render() {
-  if (currentQ < questions.length) {
-    renderQuestion();
-  } else if (hotTakes.length === 0) {
-    renderMineButton();
-  } else {
-    renderResults();
-  }
+function init() {
+  renderQuestions();
+  checkForSaved();
 }
 
-function renderStepper() {
-  let html = '<div class="stepper">';
-  for (let i = 0; i < questions.length; i++) {
-    const cls = i < currentQ ? 'done' : i === currentQ ? 'active' : '';
-    html += `<div class="step-dot ${cls}">${i < currentQ ? '✓' : i+1}</div>`;
-    if (i < questions.length - 1) html += `<div class="step-line ${i < currentQ ? 'done' : ''}"></div>`;
-  }
-  html += '</div>';
-  return html;
-}
-
-function renderQuestion() {
-  const q = questions[currentQ];
-  const saved = answers[q.id] || '';
-  const pct = Math.round((currentQ / questions.length) * 100);
-
-  document.getElementById('mainArea').innerHTML = `
-    ${renderStepper()}
-    <p class="progress-text">${currentQ} of ${questions.length} questions answered${currentQ > 0 ? ' — you\'re doing great ✦' : ''}</p>
-    <div class="card">
-      <div class="q-number">${q.num}</div>
-      <div class="q-text">${q.text}</div>
-      <div class="q-why">💜 ${q.why}</div>
-      <div class="field-group">
-        <label>Your honest answer — don't filter yourself</label>
-        <textarea id="qAnswer" placeholder="${q.placeholder}">${saved}</textarea>
+function renderQuestions() {
+  const area = document.getElementById('questionsArea');
+  area.innerHTML = questions.map((q, i) => `
+    <div class="q-card" id="qcard-${q.id}">
+      <div class="q-header">
+        <div class="q-num" id="qnum-${q.id}">${i+1}</div>
+        <div class="q-content">
+          <div class="q-text">${q.text}</div>
+          <div class="q-why">💜 ${q.why}</div>
+          <textarea id="qa-${q.id}" placeholder="${q.placeholder}" oninput="onType('${q.id}')"></textarea>
+          <span class="q-skip">Skip if nothing comes — that's totally fine ✦</span>
+        </div>
       </div>
-      <div class="btn-row">
-        ${currentQ > 0 ? '<button class="btn-back" onclick="goBack()">← Back</button>' : ''}
-        <button class="btn-next" onclick="goNext()">
-          ${currentQ < questions.length - 1 ? 'Next question →' : 'See my hot takes ✦'}
-        </button>
-      </div>
-    </div>`;
-
-  document.getElementById('qAnswer').focus();
+    </div>`).join('');
 }
 
-function renderMineButton() {
-  document.getElementById('mainArea').innerHTML = `
-    ${renderStepper()}
-    <div class="card" style="text-align:center;padding:32px;">
-      <div style="font-size:36px;margin-bottom:12px;">🔥</div>
-      <div style="font-family:'Montserrat',sans-serif;font-size:18px;font-weight:900;color:var(--tx);margin-bottom:8px;">All 7 questions answered!</div>
-      <div style="font-size:14px;color:var(--txs);margin-bottom:20px;line-height:1.6;">Time to surface your 7 strongest hot takes, ranked by scroll-stopping potential.</div>
-      <button class="btn-mine" id="mineBtn" onclick="mineHotTakes()">✦ Mine my hot takes</button>
-      <div id="mineError"></div>
-    </div>`;
+function onType(id) {
+  const val = document.getElementById(`qa-${id}`).value.trim();
+  const num = document.getElementById(`qnum-${id}`);
+  if (val) { answeredIds.add(id); num.classList.add('answered'); }
+  else { answeredIds.delete(id); num.classList.remove('answered'); }
+  updateCount();
 }
 
-function goNext() {
-  const val = document.getElementById('qAnswer').value.trim();
-  if (!val) {
-    document.getElementById('qAnswer').style.borderColor = '#f7c1c1';
+function updateCount() {
+  const n = answeredIds.size;
+  const count = document.getElementById('answeredCount');
+  const btn = document.getElementById('mineBtn');
+  if (n === 0) { count.textContent = 'Answer at least 1 question to begin'; btn.disabled = true; }
+  else { count.textContent = `${n} of 7 question${n>1?'s':''} answered ✦`; btn.disabled = false; }
+}
+
+function checkForSaved() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      if (parsed && parsed.length > 0) document.getElementById('restoreBar').style.display = 'flex';
+    }
+  } catch(e) {}
+}
+
+function restoreSaved() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    if (saved && saved.length > 0) {
+      hotTakes = saved;
+      document.getElementById('restoreBar').style.display = 'none';
+      showResults(false);
+    }
+  } catch(e) {}
+}
+
+function clearSaved() {
+  try { localStorage.removeItem(STORAGE_KEY); } catch(e) {}
+  document.getElementById('restoreBar').style.display = 'none';
+}
+
+async function mine() {
+  const answers = {};
+  questions.forEach(q => {
+    const val = document.getElementById(`qa-${q.id}`).value.trim();
+    if (val) answers[q.text] = val;
+  });
+
+  if (Object.keys(answers).length === 0) {
+    document.getElementById('mineError').innerHTML = '<div class="error-box">Please answer at least one question above.</div>';
     return;
   }
-  answers[questions[currentQ].id] = val;
-  currentQ++;
-  render();
-}
 
-function goBack() {
-  if (currentQ > 0) {
-    const val = document.getElementById('qAnswer')?.value?.trim();
-    if (val) answers[questions[currentQ].id] = val;
-    currentQ--;
-    render();
-  }
-}
-
-async function mineHotTakes() {
   const btn = document.getElementById('mineBtn');
   btn.disabled = true;
-  btn.textContent = '✦ Mining...';
+  btn.textContent = '🔥 Mining your hot takes...';
+  document.getElementById('mineError').innerHTML = '';
 
-  const answerSummary = questions.map(q => `${q.text}\nAnswer: ${answers[q.id] || '(skipped)'}`).join('\n\n');
+  const answerBlock = Object.entries(answers).map(([q,a]) => `Q: ${q}\nA: ${a}`).join('\n\n');
 
-  const sys = `You are a viral content strategist specializing in hot take content for spiritual female entrepreneurs. You identify scroll-stopping opinions buried inside people's authentic answers and craft them into powerful, specific, ready-to-post hot takes for TikTok and Instagram Reels.
+  const sys = `You are a viral content strategist for spiritual female entrepreneurs. Your job is to identify the 7 most scroll-stopping hot takes buried in someone's honest answers and craft them into bold, specific, ready-to-post content.
 
-A great hot take for spiritual entrepreneurs:
-- Challenges a widely-held industry belief
-- Is specific, not vague
-- Has a clear "villain" (bad advice, old paradigm, wrong strategy)
-- Comes from lived experience
+A great hot take for this audience:
+- Challenges a widely-held industry belief with specificity
+- Comes from lived experience — not theory
 - Would make the creator slightly nervous to post
-- Uses direct, conversational language — not corporate or polished`;
+- Is written in direct, first-person, conversational language
+- Has a clear "before" belief being challenged and a "truth" being offered
+- Is specific enough that a stranger could identify the niche just from reading it`;
 
-  const usr = `Based on these 7 mining questions and answers, identify the 7 strongest hot takes this person has. Rank them from most to least scroll-stopping potential.
+  const usr = `Based on these answers, identify and craft 7 hot takes ranked from most to least scroll-stopping potential.
 
 ANSWERS:
-${answerSummary}
+${answerBlock}
 
 For each hot take, provide EXACTLY this format:
 
 HOT TAKE [number]:
-HEAT LEVEL: [🔥 Warm / 🔥🔥 Hot / 🔥🔥🔥 Scorching]
-THE TAKE: [The core opinion in 1-2 punchy sentences. First person. Conversational. No corporate language.]
-HOOK LINE: [The exact first line they'd say on camera — must stop the scroll in 3 seconds]
-WHY IT WORKS: [1 sentence on why this will perform]
-BEST FORMAT: [Reel/TikTok script / Carousel / Skool post / All three]
+HEAT: [🔥 / 🔥🔥 / 🔥🔥🔥]
+TAKE: [The core opinion in 1-2 punchy sentences. First person. Conversational. Specific.]
+HOOK: [The exact first line to say on camera — stops the scroll in 3 seconds]
+WHY: [1 sentence on why this will perform]
+FORMAT: [Best content format: Short Reel / Long Reel / Carousel / Skool post / All of the above]
 
----
-
-Generate all 7 hot takes now.`;
+Generate all 7 now.`;
 
   try {
     const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:2000,system:sys,messages:[{role:'user',content:usr}]})
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 2200,
+        system: sys,
+        messages: [{ role: 'user', content: usr }]
+      })
     });
     const data = await res.json();
     const text = data.content?.[0]?.text || '';
     hotTakes = parseHotTakes(text);
-    render();
+    if (hotTakes.length === 0) throw new Error('parse failed');
+    showResults(true);
   } catch(e) {
-    document.getElementById('mineError').innerHTML = '<div class="error-box" style="margin-top:12px;">Something went wrong. Please try again.</div>';
+    document.getElementById('mineError').innerHTML = '<div class="error-box">Something went wrong — please try again.</div>';
     btn.disabled = false;
-    btn.textContent = '✦ Mine my hot takes';
+    btn.textContent = '🔥 Surface my hot takes';
   }
 }
 
@@ -305,137 +296,122 @@ function parseHotTakes(text) {
   const takes = [];
   const blocks = text.split(/HOT TAKE \d+:/i).filter(b => b.trim());
   blocks.forEach((block, i) => {
-    const heat = (block.match(/HEAT LEVEL:\s*([^\n]+)/i)||[])[1]?.trim() || '🔥🔥';
-    const take = (block.match(/THE TAKE:\s*([^\n]+(?:\n(?!HOOK LINE:)[^\n]+)*)/i)||[])[1]?.trim() || '';
-    const hook = (block.match(/HOOK LINE:\s*([^\n]+)/i)||[])[1]?.trim() || '';
-    const why  = (block.match(/WHY IT WORKS:\s*([^\n]+)/i)||[])[1]?.trim() || '';
-    const fmt  = (block.match(/BEST FORMAT:\s*([^\n]+)/i)||[])[1]?.trim() || '';
-    if (take) takes.push({heat, take, hook, why, fmt});
+    const heat   = (block.match(/HEAT:\s*([^\n]+)/i)||[])[1]?.trim() || '🔥🔥';
+    const take   = (block.match(/TAKE:\s*([\s\S]*?)(?=\nHOOK:|$)/i)||[])[1]?.trim() || '';
+    const hook   = (block.match(/HOOK:\s*([^\n]+)/i)||[])[1]?.trim() || '';
+    const why    = (block.match(/WHY:\s*([^\n]+)/i)||[])[1]?.trim() || '';
+    const format = (block.match(/FORMAT:\s*([^\n]+)/i)||[])[1]?.trim() || '';
+    if (take) takes.push({ id: `take-${i}`, heat, take, hook, why, format });
   });
   return takes;
 }
 
-function renderResults() {
-  let takesHtml = hotTakes.map((t, i) => `
+function showResults(isNew) {
+  document.getElementById('miningView').style.display = 'none';
+  document.getElementById('resultsView').style.display = 'block';
+  document.getElementById('savedBanner').classList.remove('visible');
+
+  const area = document.getElementById('takesArea');
+  area.innerHTML = hotTakes.map((t, i) => `
     <div class="take-card">
-      <div class="take-header">
-        <span class="take-rank">Hot Take #${i+1}</span>
-        <span class="take-heat">${t.heat}</span>
+      <div class="take-top">
+        <div class="take-rank-row">
+          <span class="take-rank">Hot Take #${i+1}</span>
+          <span class="take-heat">${t.heat}</span>
+        </div>
+        <span class="take-meta">${t.format}</span>
       </div>
       <div class="take-body">
-        <div class="take-label">The take</div>
-        <div class="take-text">${t.take}</div>
-        <div class="take-label hook-lbl">Hook line (say this first on camera)</div>
-        <div class="take-text">"${t.hook}"</div>
-        <div class="take-label why-lbl">Why it works</div>
-        <div class="take-text">${t.why}</div>
-        <div class="take-label format-lbl">Best format</div>
-        <div class="take-text">${t.fmt}</div>
+        <div class="take-edit-wrap">
+          <div class="take-edit-label">
+            The take
+            <span class="edit-hint">— edit to make it sound more like you</span>
+          </div>
+          <textarea class="take-textarea" id="edit-${t.id}" oninput="onEditTake('${t.id}', this.value)">${t.take}</textarea>
+        </div>
+        <div class="take-field">
+          <div class="field-lbl lbl-hook">Hook line (say this first on camera)</div>
+          <div class="field-val">"${t.hook}"</div>
+        </div>
+        <div class="take-field">
+          <div class="field-lbl lbl-why">Why it works</div>
+          <div class="field-val">${t.why}</div>
+        </div>
+        <button class="script-btn" onclick="sendToStudio(${i})">Turn into a script →</button>
       </div>
     </div>`).join('');
 
-  const skoolCommunityPost = `🔥 Hot take incoming — and I want to know if you agree or if I'm totally wrong.
-
-[PASTE YOUR TAKE HERE]
-
-Does this land for you? Or do you think I'm off base?
-
-Drop your thoughts below 👇 — genuinely curious where everyone is at with this one.
-
-(And if this sparked something for YOU, what's a hot take you've been sitting on? Share it. This is a safe space.)`;
-
-  const skoolPoll = `POLL: I'm about to say something that might be controversial... 👀
-
-[PASTE YOUR TAKE HERE — as a yes/no or either/or]
-
-React to this post:
-💜 = YES, this is exactly right
-🔥 = Controversial but I needed to hear it
-🤔 = I'm not sure yet
-❌ = Respectfully disagree
-
-Tell me your reaction in the comments — I want the real conversation.`;
-
-  const takeOptions = hotTakes.map((t,i) => `<option value="${i}">Hot Take #${i+1}: ${t.take.substring(0,60)}...</option>`).join('');
-
-  document.getElementById('mainArea').innerHTML = `
-    <div style="text-align:center;padding:8px 0 24px;">
-      <div style="font-size:32px;margin-bottom:8px;">🔥</div>
-      <div style="font-family:'Montserrat',sans-serif;font-size:20px;font-weight:900;color:var(--tx);margin-bottom:6px;">Your Hot Take Bank</div>
-      <p style="font-size:14px;color:var(--txs);max-width:460px;margin:0 auto;line-height:1.6;">7 scroll-stopping opinions excavated from your answers — ranked by viral potential. This is your content for the next 7 weeks.</p>
-    </div>
-
-    ${takesHtml}
-
-    <div class="skool-section">
-      <div class="sec-label">✦ How to use these in Skool</div>
-      <div class="skool-tabs">
-        <button class="skool-tab active" onclick="switchTab('community',this)">Community post</button>
-        <button class="skool-tab" onclick="switchTab('poll',this)">Poll / discussion</button>
-      </div>
-
-      <div class="skool-panel active" id="tab-community">
-        <div class="skool-template">
-          <h4>The Hot Take Community Post</h4>
-          <p>Post this in your Skool feed — these posts consistently generate the highest comment counts because they invite real debate. Replace [PASTE YOUR TAKE HERE] with any of your 7 takes above.</p>
-          <div class="template-box">${skoolCommunityPost}</div>
-          <span class="copy-small" onclick="copyText('${skoolCommunityPost.replace(/'/g,"\\'")}', this)">Copy template</span>
-        </div>
-        <div class="card" style="background:var(--p50);border-color:var(--p200);">
-          <div class="card-title">💡 Pro tip: The Pattern Interrupt Post</div>
-          <p style="font-size:13px;color:var(--txs);line-height:1.6;margin-top:6px;">Start with "Unpopular opinion:" or "Hot take:" — these phrases signal to your community that something bold is coming and increase open rates on Skool notifications. Post hot takes on Tuesdays or Thursdays for highest engagement in spiritual biz communities.</p>
-        </div>
-      </div>
-
-      <div class="skool-panel" id="tab-poll">
-        <div class="skool-template">
-          <h4>The Poll / Discussion Thread</h4>
-          <p>Turn your hot take into a community poll. Emoji reactions work as built-in poll mechanics on Skool — ask people to react instead of just comment. This gets more responses from lurkers.</p>
-          <div class="template-box">${skoolPoll}</div>
-          <span class="copy-small" onclick="copyText('${skoolPoll.replace(/'/g,"\\'")}', this)">Copy template</span>
-        </div>
-        <div class="card" style="background:var(--p50);border-color:var(--p200);">
-          <div class="card-title">💡 Pro tip: Start the conversation yourself</div>
-          <p style="font-size:13px;color:var(--txs);line-height:1.6;margin-top:6px;">After posting, leave the FIRST comment yourself — share a quick story or extra thought. This seeds the discussion and shows the algorithm there's already engagement. Then reply to every single person who comments in the first 2 hours.</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="studio-cta">
-      <h3>Ready to turn a hot take into a full Reel or TikTok script?</h3>
-      <p>Select one of your hot takes below and open the Script Studio with it pre-filled.</p>
-      <select class="take-select" id="takeSelect">${takeOptions}</select>
-      <br>
-      <button class="btn-studio" onclick="sendToStudio()">Open in Script Studio →</button>
-    </div>`;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-function switchTab(tab, btn) {
-  document.querySelectorAll('.skool-tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.skool-panel').forEach(p => p.classList.remove('active'));
-  btn.classList.add('active');
-  document.getElementById('tab-' + tab).classList.add('active');
-  skoolTab = tab;
+function onEditTake(id, val) {
+  const take = hotTakes.find(t => t.id === id);
+  if (take) take.take = val;
 }
 
-function copyText(text, btn) {
-  navigator.clipboard.writeText(text).then(() => {
-    btn.textContent = '✓ Copied!';
-    setTimeout(() => btn.textContent = 'Copy template', 2000);
-  });
-}
-
-function sendToStudio() {
-  const idx = parseInt(document.getElementById('takeSelect').value);
-  const take = hotTakes[idx];
-  if (!take) return;
-  const msg = `I want to create a hot take Reel script. My hot take is: "${take.take}" — and the hook line I want to use is: "${take.hook}"`;
-  if (typeof sendPrompt === 'function') {
-    sendPrompt(msg);
-  } else {
-    navigator.clipboard.writeText(msg).then(() => alert('Copied to clipboard! Paste this into the Script Studio.'));
+function saveTakes() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(hotTakes));
+    const btn = document.getElementById('saveBtn');
+    btn.textContent = '✓ Saved!';
+    btn.classList.add('saved');
+    document.getElementById('savedBanner').classList.add('visible');
+    setTimeout(() => { btn.textContent = '💾 Save to browser'; btn.classList.remove('saved'); }, 2500);
+  } catch(e) {
+    alert('Browser storage not available. Try downloading instead.');
   }
 }
 
-render();
+function downloadTakes() {
+  const lines = ['🔥 MY HOT TAKE BANK', '✦ Visibility by Design Challenge — Day 4', `Generated: ${new Date().toLocaleDateString()}`, '', '─'.repeat(50), ''];
+  hotTakes.forEach((t, i) => {
+    lines.push(`HOT TAKE #${i+1}  ${t.heat}`);
+    lines.push('');
+    lines.push('THE TAKE:');
+    lines.push(t.take);
+    lines.push('');
+    lines.push('HOOK LINE (say this first on camera):');
+    lines.push(`"${t.hook}"`);
+    lines.push('');
+    lines.push('WHY IT WORKS:');
+    lines.push(t.why);
+    lines.push('');
+    lines.push('BEST FORMAT:');
+    lines.push(t.format);
+    lines.push('');
+    lines.push('─'.repeat(50));
+    lines.push('');
+  });
+  lines.push('Created with Visibility by Design Challenge');
+  lines.push('✦ Spiritual Business Skool');
+
+  const blob = new Blob([lines.join('\n')], { type: 'text/plain' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'my-hot-take-bank.txt';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function goBack() {
+  document.getElementById('resultsView').style.display = 'none';
+  document.getElementById('miningView').style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function sendToStudio(idx) {
+  const take = hotTakes[idx];
+  if (!take) return;
+  const msg = `I want to create a hot take Reel script. My hot take is: "${take.take}" — and the hook line I want to use is: "${take.hook}"`;
+  navigator.clipboard.writeText(msg).then(() => {
+    alert('Copied! Paste this into the Script Studio to generate your full script.');
+  }).catch(() => {
+    prompt('Copy this to use in the Script Studio:', msg);
+  });
+}
+
+init();
 </script>
+</body>
+</html>
