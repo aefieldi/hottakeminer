@@ -1,0 +1,2 @@
+# hottakeminer
+Generate Hot Takes
