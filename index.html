@@ -3,207 +3,1220 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hot Take Miner v2 — Visibility by Design</title>
+<title>Hot Take Miner — Spiritual Business Skool</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Lato:ital,wght@0,300;0,400;1,300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap');
+
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-:root{
-  --p50:#EEEDFE;--p200:#AFA9EC;--p400:#7F77DD;--p600:#534AB7;--p800:#3C3489;
-  --pk400:#D4537E;--pk50:#FBEAF0;--pk200:#ED93B1;
-  --t400:#1D9E75;--t50:#E1F5EE;--t200:#9FE1CB;
-  --bg:#faf9ff;--surf:#ffffff;--surf2:#f4f2fd;
-  --bdr:rgba(127,119,221,0.18);--bdr2:rgba(127,119,221,0.35);
-  --tx:#1a1730;--txs:#5c5480;--txm:#9490b8;
+
+:root {
+  --bg: #faf5ff;
+  --bg2: #f3ecff;
+  --surf: #ffffff;
+  --surf2: #f8f3ff;
+  --surf3: #efe6ff;
+  --bdr: rgba(168,130,255,0.18);
+  --bdr2: rgba(168,130,255,0.35);
+  --p: #9b6fda;
+  --p2: #7c52c9;
+  --p3: #6b3fa0;
+  --p-glow: rgba(155,111,218,0.12);
+  --pink: #e87fad;
+  --pink2: #d45e92;
+  --pink-glow: rgba(232,127,173,0.12);
+  --rose: #f0a0c0;
+  --lilac: #c9a8f0;
+  --lilac2: #dcc8ff;
+  --grad1: linear-gradient(135deg, #e8d5ff 0%, #f5e0f0 50%, #dcc8ff 100%);
+  --grad2: linear-gradient(135deg, #9b6fda 0%, #d45e92 100%);
+  --grad3: linear-gradient(135deg, #c9a8f0 0%, #e87fad 50%, #f0a0c0 100%);
+  --tx: #2d1b4e;
+  --txs: #5a4478;
+  --txm: #8b7aa8;
+  --white: #ffffff;
 }
-body{background:var(--bg);color:var(--tx);font-family:'Lato',sans-serif;min-height:100vh;padding:0 0 80px;}
-body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 70% 50% at 15% 10%,rgba(175,169,236,0.18) 0%,transparent 60%),radial-gradient(ellipse 50% 60% at 85% 90%,rgba(212,83,126,0.08) 0%,transparent 60%);pointer-events:none;z-index:0;}
-.wrap{position:relative;z-index:1;max-width:760px;margin:0 auto;padding:0 20px 60px;}
 
-.header{text-align:center;padding:40px 16px 28px;}
-.badge{display:inline-block;background:var(--p50);border:1px solid var(--p200);color:var(--p600);font-family:'Montserrat',sans-serif;font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;padding:5px 16px;border-radius:100px;margin-bottom:16px;}
-h1{font-family:'Montserrat',sans-serif;font-size:clamp(24px,4.5vw,34px);font-weight:900;color:var(--tx);line-height:1.12;margin-bottom:10px;}
-h1 span{color:var(--p400);}
-.subtitle{font-size:14px;color:var(--txs);line-height:1.65;max-width:500px;margin:0 auto;font-weight:300;}
+body {
+  background: var(--bg);
+  color: var(--tx);
+  font-family: 'DM Sans', sans-serif;
+  min-height: 100vh;
+  padding-bottom: 100px;
+  position: relative;
+  overflow-x: hidden;
+}
 
-.intro-card{background:var(--pk50);border:1px solid var(--pk200);border-radius:16px;padding:18px 22px;margin-bottom:24px;}
-.intro-card p{font-size:13.5px;color:var(--pk400);line-height:1.65;}
-.intro-card strong{font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;letter-spacing:0.5px;display:block;margin-bottom:6px;color:var(--pk400);}
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 40% at 10% 20%, rgba(155,111,218,0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 50% at 90% 80%, rgba(232,127,173,0.1) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 60% at 50% 50%, rgba(201,168,240,0.08) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
 
-.q-card{background:var(--surf);border:1px solid var(--bdr);border-radius:16px;padding:20px 22px;margin-bottom:12px;box-shadow:0 2px 14px rgba(127,119,221,0.05);transition:border-color 0.2s;}
-.q-card:focus-within{border-color:var(--p200);}
-.q-header{display:flex;align-items:flex-start;gap:12px;margin-bottom:10px;}
-.q-num{flex-shrink:0;width:26px;height:26px;border-radius:50%;background:var(--p50);border:1px solid var(--p200);display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:10px;font-weight:800;color:var(--p600);margin-top:1px;transition:all 0.2s;}
-.q-num.answered{background:var(--p400);border-color:var(--p400);color:#fff;}
-.q-content{flex:1;}
-.q-text{font-family:'Montserrat',sans-serif;font-size:14px;font-weight:700;color:var(--tx);line-height:1.35;margin-bottom:4px;}
-.q-why{font-size:12px;color:var(--txm);font-style:italic;line-height:1.5;margin-bottom:12px;}
-.q-card textarea{width:100%;background:var(--surf2);border:1px solid var(--bdr);border-radius:10px;padding:11px 14px;color:var(--tx);font-family:'Lato',sans-serif;font-size:13.5px;line-height:1.6;resize:vertical;min-height:80px;transition:border-color 0.18s;}
-.q-card textarea:focus{outline:none;border-color:var(--p400);background:var(--surf);}
-.q-card textarea::placeholder{color:var(--txm);}
-.q-skip{font-family:'Montserrat',sans-serif;font-size:10px;font-weight:700;color:var(--txm);letter-spacing:0.5px;margin-top:7px;display:inline-block;}
+.container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  position: relative;
+  z-index: 1;
+}
 
-.mine-btn{width:100%;padding:16px;background:var(--pk400);color:#fff;font-family:'Montserrat',sans-serif;font-weight:900;font-size:15px;border:none;border-radius:14px;cursor:pointer;transition:all 0.18s;margin-top:8px;box-shadow:0 4px 20px rgba(212,83,126,0.28);}
-.mine-btn:hover{background:#b03068;transform:translateY(-1px);}
-.mine-btn:disabled{opacity:0.45;cursor:not-allowed;transform:none;box-shadow:none;}
-.answered-count{text-align:center;font-size:13px;color:var(--txs);margin-top:10px;font-style:italic;}
+/* ─── HEADER ─── */
+.header {
+  text-align: center;
+  margin-bottom: 40px;
+  animation: fadeDown 0.7s ease both;
+}
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.header .eyebrow {
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--p);
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.header h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 5vw, 2.8rem);
+  font-weight: 900;
+  background: var(--grad2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1.15;
+  margin-bottom: 12px;
+}
+.header p {
+  font-size: 15px;
+  color: var(--txs);
+  line-height: 1.6;
+  max-width: 540px;
+  margin: 0 auto;
+}
 
-.loading-dots{display:flex;gap:7px;justify-content:center;padding:40px 0;}
-.dot{width:10px;height:10px;border-radius:50%;background:var(--pk200);animation:dp 1.2s infinite;}
-.dot:nth-child(2){animation-delay:0.2s;}.dot:nth-child(3){animation-delay:0.4s;}
-@keyframes dp{0%,100%{opacity:0.3;transform:scale(0.8);}50%{opacity:1;transform:scale(1);}}
+/* ─── MODE TOGGLE ─── */
+.mode-toggle {
+  display: flex;
+  gap: 0;
+  background: var(--surf);
+  border: 1px solid var(--bdr);
+  border-radius: 14px;
+  overflow: hidden;
+  margin-bottom: 32px;
+  box-shadow: 0 2px 12px rgba(155,111,218,0.08);
+}
+.mode-btn {
+  flex: 1;
+  padding: 16px 12px;
+  border: none;
+  background: transparent;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--txm);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+.mode-btn.active {
+  background: var(--grad2);
+  color: white;
+}
+.mode-btn .badge {
+  display: inline-block;
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 100px;
+  margin-left: 6px;
+  vertical-align: middle;
+}
+.mode-btn.active .badge {
+  background: rgba(255,255,255,0.2);
+  color: white;
+}
+.mode-btn:not(.active) .badge {
+  background: var(--surf3);
+  color: var(--p);
+}
 
-.results-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;}
-.results-header h2{font-family:'Montserrat',sans-serif;font-size:18px;font-weight:900;color:var(--tx);}
-.action-row{display:flex;gap:8px;flex-wrap:wrap;}
-.action-btn{padding:8px 16px;border-radius:100px;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;cursor:pointer;transition:all 0.18s;border:1px solid;}
-.btn-save{background:var(--t50);border-color:var(--t200);color:var(--t400);}
-.btn-save:hover{background:var(--t200);}
-.btn-save.saved{background:var(--t400);color:#fff;border-color:var(--t400);}
-.btn-dl{background:var(--p50);border-color:var(--p200);color:var(--p600);}
-.btn-dl:hover{background:var(--p200);}
-.btn-remine{background:var(--pk50);border-color:var(--pk200);color:var(--pk400);}
-.btn-remine:hover{background:var(--pk200);}
+/* ─── BRAIN DUMP ─── */
+.brain-dump-area {
+  display: none;
+}
+.brain-dump-area.visible { display: block; }
 
-.take-card{background:var(--surf);border:1px solid var(--bdr);border-radius:14px;margin-bottom:12px;overflow:hidden;box-shadow:0 2px 12px rgba(127,119,221,0.06);}
-.take-top{display:flex;align-items:center;justify-content:space-between;padding:12px 18px;background:var(--p50);border-bottom:1px solid var(--bdr);}
-.take-rank-row{display:flex;align-items:center;gap:10px;}
-.take-rank{font-family:'Montserrat',sans-serif;font-size:10px;font-weight:800;letter-spacing:1.5px;color:var(--p600);text-transform:uppercase;}
-.take-heat{font-size:14px;}
-.take-meta{font-family:'Montserrat',sans-serif;font-size:10px;color:var(--txm);font-weight:600;}
-.take-body{padding:16px 18px;}
+.spark-questions {
+  background: var(--surf);
+  border: 1px solid var(--bdr);
+  border-radius: 14px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+.spark-questions h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--p2);
+  margin-bottom: 12px;
+}
+.spark-questions p {
+  font-size: 13px;
+  color: var(--txm);
+  margin-bottom: 14px;
+  line-height: 1.5;
+}
+.spark-q {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--bdr);
+  font-size: 14px;
+  color: var(--txs);
+  line-height: 1.5;
+}
+.spark-q:last-child { border-bottom: none; }
+.spark-q .num {
+  font-weight: 700;
+  color: var(--p);
+  min-width: 22px;
+}
 
-.take-edit-wrap{margin-bottom:14px;}
-.take-edit-label{font-family:'Montserrat',sans-serif;font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--p400);margin-bottom:6px;display:flex;align-items:center;gap:6px;}
-.edit-hint{font-size:10px;color:var(--txm);font-weight:400;letter-spacing:0;font-style:italic;font-family:'Lato',sans-serif;}
-.take-textarea{width:100%;background:var(--surf2);border:1px solid var(--bdr);border-radius:8px;padding:10px 13px;color:var(--tx);font-family:'Lato',sans-serif;font-size:14px;line-height:1.65;resize:vertical;min-height:64px;transition:border-color 0.18s;}
-.take-textarea:focus{outline:none;border-color:var(--p400);background:var(--surf);}
+.dump-box {
+  width: 100%;
+  min-height: 200px;
+  border: 2px solid var(--bdr2);
+  border-radius: 14px;
+  padding: 18px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  color: var(--tx);
+  background: var(--surf);
+  resize: vertical;
+  outline: none;
+  transition: border-color 0.3s;
+  line-height: 1.6;
+}
+.dump-box:focus {
+  border-color: var(--p);
+  box-shadow: 0 0 0 4px var(--p-glow);
+}
+.dump-box::placeholder { color: var(--txm); }
 
-.take-field{margin-bottom:10px;}
-.field-lbl{font-family:'Montserrat',sans-serif;font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;}
-.lbl-hook{color:var(--pk400);}
-.lbl-why{color:var(--p600);}
-.lbl-fmt{color:var(--t400);}
-.field-val{font-size:13px;color:var(--txs);line-height:1.6;}
+.word-count {
+  text-align: right;
+  font-size: 12px;
+  color: var(--txm);
+  margin-top: 8px;
+  padding-right: 4px;
+}
+.word-count.ready { color: var(--p); font-weight: 600; }
 
-.script-btn{display:inline-block;margin-top:6px;padding:6px 16px;background:var(--p50);border:1px solid var(--p200);border-radius:100px;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;color:var(--p600);cursor:pointer;transition:all 0.15s;}
-.script-btn:hover{background:var(--p200);}
+/* ─── QUESTION MODE ─── */
+.questions-area { display: none; }
+.questions-area.visible { display: block; }
 
-.saved-banner{background:var(--t50);border:1px solid var(--t200);border-radius:10px;padding:12px 16px;margin-bottom:16px;font-size:13px;color:var(--t400);line-height:1.5;display:none;}
-.saved-banner.visible{display:block;}
+.q-card {
+  background: var(--surf);
+  border: 1px solid var(--bdr);
+  border-radius: 14px;
+  padding: 20px;
+  margin-bottom: 16px;
+  animation: fadeUp 0.4s ease both;
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.q-card .q-num {
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--p);
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.q-card .q-text {
+  font-family: 'Playfair Display', serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--tx);
+  margin-bottom: 14px;
+  line-height: 1.4;
+}
+.q-card textarea {
+  width: 100%;
+  min-height: 100px;
+  border: 1.5px solid var(--bdr);
+  border-radius: 10px;
+  padding: 14px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  color: var(--tx);
+  background: var(--surf2);
+  resize: vertical;
+  outline: none;
+  transition: border-color 0.3s;
+  line-height: 1.5;
+}
+.q-card textarea:focus {
+  border-color: var(--p);
+  box-shadow: 0 0 0 3px var(--p-glow);
+}
+.q-card textarea::placeholder { color: var(--txm); }
 
-.error-box{background:#fff5f5;border:1px solid #f7c1c1;color:#a32d2d;padding:12px 16px;border-radius:10px;font-size:13px;margin-top:12px;}
+/* ─── MINE BUTTON ─── */
+.mine-btn {
+  width: 100%;
+  padding: 18px;
+  border: none;
+  border-radius: 14px;
+  background: var(--grad2);
+  color: white;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 24px;
+  transition: all 0.3s ease;
+  letter-spacing: 0.5px;
+  position: relative;
+  overflow: hidden;
+}
+.mine-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(155,111,218,0.3); }
+.mine-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+.mine-btn .shimmer {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.15) 50%, transparent 100%);
+  animation: shimmer 2s infinite;
+}
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
 
-.restore-bar{background:var(--t50);border:1px solid var(--t200);border-radius:12px;padding:14px 18px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
-.restore-bar p{font-size:13px;color:var(--t400);line-height:1.5;flex:1;}
-.restore-bar strong{font-family:'Montserrat',sans-serif;}
-.btn-restore{padding:8px 18px;background:var(--t400);color:#fff;border:none;border-radius:8px;font-family:'Montserrat',sans-serif;font-weight:700;font-size:12px;cursor:pointer;}
-.btn-clear{padding:8px 12px;background:transparent;border:1px solid var(--t200);border-radius:8px;font-family:'Montserrat',sans-serif;font-weight:700;font-size:11px;color:var(--txm);cursor:pointer;}
+/* ─── LOADING ─── */
+.loading-overlay {
+  display: none;
+  text-align: center;
+  padding: 60px 20px;
+}
+.loading-overlay.visible { display: block; }
+.loading-spinner {
+  width: 48px; height: 48px;
+  border: 3px solid var(--bdr);
+  border-top-color: var(--p);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto 20px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-text {
+  font-size: 15px;
+  color: var(--txs);
+  line-height: 1.6;
+}
+.loading-sub {
+  font-size: 13px;
+  color: var(--txm);
+  margin-top: 8px;
+}
+
+/* ─── ERROR ─── */
+.error-box {
+  display: none;
+  background: #fff5f5;
+  border: 1px solid #f5c6c6;
+  border-radius: 14px;
+  padding: 20px;
+  margin-top: 20px;
+  text-align: center;
+}
+.error-box.visible { display: block; }
+.error-box h3 { color: #c53030; font-size: 16px; margin-bottom: 8px; }
+.error-box p { color: #7a3b3b; font-size: 14px; line-height: 1.5; }
+.error-box .retry-btn {
+  display: inline-block;
+  margin-top: 14px;
+  padding: 10px 24px;
+  background: var(--grad2);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.error-box .debug-text {
+  margin-top: 12px;
+  padding: 10px;
+  background: #f8f0f0;
+  border-radius: 8px;
+  font-family: monospace;
+  font-size: 11px;
+  color: #999;
+  word-break: break-all;
+  text-align: left;
+  max-height: 100px;
+  overflow-y: auto;
+}
+
+/* ─── RESULTS ─── */
+#resultsView { display: none; }
+
+.results-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+.results-header h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  font-weight: 900;
+  background: var(--grad2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 8px;
+}
+.results-header p {
+  font-size: 14px;
+  color: var(--txs);
+}
+.results-count {
+  display: inline-block;
+  background: var(--grad2);
+  color: white;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 14px;
+  border-radius: 100px;
+  margin-bottom: 8px;
+}
+
+/* ─── TAKE CARD ─── */
+.take-card {
+  background: var(--surf);
+  border: 1px solid var(--bdr);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 18px;
+  animation: fadeUp 0.5s ease both;
+  box-shadow: 0 2px 12px rgba(155,111,218,0.06);
+}
+.take-num {
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--p);
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+.take-text {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--tx);
+  line-height: 1.4;
+  margin-bottom: 14px;
+}
+.take-hook {
+  background: var(--surf3);
+  border: 1px solid var(--bdr);
+  border-radius: 10px;
+  padding: 14px;
+  margin-bottom: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.take-hook:hover {
+  border-color: var(--p);
+  background: var(--p-glow);
+}
+.take-hook .hook-label {
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--p);
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.take-hook .hook-text {
+  font-size: 14px;
+  color: var(--tx);
+  font-weight: 500;
+  line-height: 1.4;
+}
+.take-hook .copy-hint {
+  font-size: 11px;
+  color: var(--txm);
+  margin-top: 6px;
+}
+.take-hook .copied-msg {
+  display: none;
+  font-size: 11px;
+  color: var(--p);
+  font-weight: 600;
+  margin-top: 6px;
+}
+
+.take-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.take-action-btn {
+  flex: 1;
+  min-width: 140px;
+  padding: 12px 16px;
+  border: 1.5px solid var(--bdr2);
+  border-radius: 10px;
+  background: var(--surf);
+  color: var(--p2);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.take-action-btn:hover {
+  background: var(--p);
+  color: white;
+  border-color: var(--p);
+}
+
+/* ─── MODAL ─── */
+.modal-bg {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(45,27,78,0.6);
+  backdrop-filter: blur(6px);
+  z-index: 100;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.modal-bg.visible { display: flex; }
+.modal {
+  background: var(--surf);
+  border-radius: 18px;
+  width: 100%;
+  max-width: 600px;
+  max-height: 80vh;
+  overflow-y: auto;
+  padding: 28px;
+  box-shadow: 0 20px 60px rgba(45,27,78,0.3);
+}
+.modal h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--tx);
+  margin-bottom: 16px;
+}
+.modal-content {
+  font-size: 14px;
+  color: var(--txs);
+  line-height: 1.7;
+  white-space: pre-wrap;
+}
+.modal-loading {
+  text-align: center;
+  padding: 40px 0;
+}
+.modal-close {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  margin-top: 20px;
+  border: none;
+  border-radius: 12px;
+  background: var(--grad2);
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.modal-copy-btn {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  border: 1.5px solid var(--bdr2);
+  border-radius: 12px;
+  background: var(--surf);
+  color: var(--p2);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.modal-copy-btn:hover { background: var(--surf3); }
+
+/* ─── BOTTOM BAR ─── */
+.bottom-bar {
+  display: flex;
+  gap: 12px;
+  margin-top: 32px;
+  flex-wrap: wrap;
+}
+.bottom-btn {
+  flex: 1;
+  min-width: 140px;
+  padding: 14px;
+  border: 1.5px solid var(--bdr2);
+  border-radius: 12px;
+  background: var(--surf);
+  color: var(--p2);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s;
+}
+.bottom-btn:hover {
+  background: var(--p);
+  color: white;
+  border-color: var(--p);
+}
+
+/* ─── RESTORE BAR ─── */
+.restore-bar {
+  display: none;
+  background: var(--surf);
+  border: 1px solid var(--bdr);
+  border-radius: 12px;
+  padding: 14px 18px;
+  margin-bottom: 24px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.restore-bar span { font-size: 14px; color: var(--txs); }
+.restore-bar button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.restore-yes { background: var(--grad2); color: white; }
+.restore-no { background: var(--surf3); color: var(--txm); }
+
+@media (max-width: 600px) {
+  .container { padding: 24px 14px; }
+  .mode-btn { font-size: 12px; padding: 14px 8px; }
+  .mode-btn .badge { display: block; margin-left: 0; margin-top: 4px; }
+  .take-actions { flex-direction: column; }
+  .bottom-bar { flex-direction: column; }
+}
 </style>
 </head>
 <body>
 
-<div class="wrap">
+<div class="container">
+  <!-- HEADER -->
   <div class="header">
-    <div class="badge">✦ Visibility by Design · Day 4</div>
-    <h1>🔥 Hot Take <span>Miner</span></h1>
-    <p class="subtitle">7 excavation questions — answer the ones that spark something, skip the rest. Your hot takes are already inside you.</p>
+    <div class="eyebrow">✦ SPIRITUAL BUSINESS SKOOL ✦</div>
+    <h1>Hot Take Miner</h1>
+    <p>Unearth the bold, opinion-driven takes that set you apart — then turn each one into a Reel script or Story series in one click.</p>
   </div>
 
-  <div id="restoreBar" style="display:none" class="restore-bar">
-    <p>✦ <strong>You have saved hot takes from a previous session.</strong> Want to pick up where you left off?</p>
-    <div style="display:flex;gap:8px;">
-      <button class="btn-restore" onclick="restoreSaved()">View saved takes</button>
-      <button class="btn-clear" onclick="clearSaved()">Start fresh</button>
+  <!-- RESTORE BAR -->
+  <div class="restore-bar" id="restoreBar">
+    <span>You have saved hot takes from a previous session</span>
+    <div>
+      <button class="restore-yes" onclick="restoreSaved()">Restore</button>
+      <button class="restore-no" onclick="clearSaved()">Clear</button>
     </div>
   </div>
 
+  <!-- MINING VIEW -->
   <div id="miningView">
-    <div class="intro-card">
-      <strong>How this works</strong>
-      <p>Read through all 7 questions below. Write in the ones that trigger something — a strong reaction, a rant you've been holding back, something you've said to a client a hundred times. <em>You don't have to answer all 7.</em> The more honest your answers, the better your hot takes will be.</p>
+    <!-- MODE TOGGLE -->
+    <div class="mode-toggle">
+      <button class="mode-btn active" id="modeDump" onclick="setMode('dump')">
+        🎙️ Brain Dump <span class="badge">FASTEST</span>
+      </button>
+      <button class="mode-btn" id="modeQuestions" onclick="setMode('questions')">
+        ✦ Guided Questions <span class="badge">STRUCTURED</span>
+      </button>
     </div>
 
-    <div id="questionsArea"></div>
+    <!-- BRAIN DUMP MODE -->
+    <div class="brain-dump-area visible" id="dumpArea">
+      <div class="spark-questions">
+        <h3>7 Sparks to Get You Going</h3>
+        <p>You don't need to answer all of these — they're just here to fire up your brain. Then dump everything into the box below.</p>
+        <div class="spark-q"><span class="num">1.</span> What's something everyone in your niche says that you disagree with?</div>
+        <div class="spark-q"><span class="num">2.</span> What advice are you tired of seeing repeated?</div>
+        <div class="spark-q"><span class="num">3.</span> What's a hard truth your audience needs to hear?</div>
+        <div class="spark-q"><span class="num">4.</span> What did you used to believe that you've completely changed your mind about?</div>
+        <div class="spark-q"><span class="num">5.</span> What's the mistake you see people making that nobody talks about?</div>
+        <div class="spark-q"><span class="num">6.</span> What's the unpopular opinion that's actually made you successful?</div>
+        <div class="spark-q"><span class="num">7.</span> What's the one thing you wish someone had told you when you were starting out?</div>
+      </div>
 
-    <button class="mine-btn" id="mineBtn" onclick="mine()" disabled>🔥 Surface my hot takes</button>
-    <p class="answered-count" id="answeredCount">Answer at least 1 question to begin</p>
-    <div id="mineError"></div>
-  </div>
+      <textarea class="dump-box" id="dumpText" placeholder="Just start talking... paste a voice memo transcript, rant about what's been on your mind, argue with the mainstream advice in your niche. No filter, no editing. The messier the better — that's where the gold is."></textarea>
+      <div class="word-count" id="wordCount">0 words (50 minimum)</div>
+    </div>
 
-  <div id="resultsView" style="display:none">
-    <div class="saved-banner" id="savedBanner">✦ Your hot takes have been saved to this browser. Come back any time and they'll be here waiting.</div>
-    <div class="results-header">
-      <h2>Your Hot Take Bank 🔥</h2>
-      <div class="action-row">
-        <button class="action-btn btn-save" id="saveBtn" onclick="saveTakes()">💾 Save to browser</button>
-        <button class="action-btn btn-dl" onclick="downloadTakes()">⬇ Download</button>
-        <button class="action-btn btn-remine" onclick="goBack()">← Mine again</button>
+    <!-- QUESTION MODE -->
+    <div class="questions-area" id="questionsArea">
+      <div class="q-card" style="animation-delay: 0s">
+        <div class="q-num">Question 01</div>
+        <div class="q-text">What's something everyone in your niche says that you disagree with?</div>
+        <textarea id="q1" placeholder="e.g. 'Everyone says you need to post every day but I think that's a fast track to burnout...'"></textarea>
+      </div>
+      <div class="q-card" style="animation-delay: 0.05s">
+        <div class="q-num">Question 02</div>
+        <div class="q-text">What advice are you tired of seeing repeated?</div>
+        <textarea id="q2" placeholder="e.g. 'Just be authentic' — like, what does that even mean when you're scared to show your face on camera..."></textarea>
+      </div>
+      <div class="q-card" style="animation-delay: 0.1s">
+        <div class="q-num">Question 03</div>
+        <div class="q-text">What's a hard truth your audience needs to hear?</div>
+        <textarea id="q3" placeholder="The thing you want to say but hold back on..."></textarea>
+      </div>
+      <div class="q-card" style="animation-delay: 0.15s">
+        <div class="q-num">Question 04</div>
+        <div class="q-text">What did you used to believe that you've completely changed your mind about?</div>
+        <textarea id="q4" placeholder="A belief that you used to swear by but now see differently..."></textarea>
+      </div>
+      <div class="q-card" style="animation-delay: 0.2s">
+        <div class="q-num">Question 05</div>
+        <div class="q-text">What's the mistake you see people making that nobody talks about?</div>
+        <textarea id="q5" placeholder="The thing you notice over and over but rarely see addressed..."></textarea>
+      </div>
+      <div class="q-card" style="animation-delay: 0.25s">
+        <div class="q-num">Question 06</div>
+        <div class="q-text">What's the unpopular opinion that's actually made you successful?</div>
+        <textarea id="q6" placeholder="The counterintuitive thing that works for you..."></textarea>
+      </div>
+      <div class="q-card" style="animation-delay: 0.3s">
+        <div class="q-num">Question 07</div>
+        <div class="q-text">What's the one thing you wish someone had told you when you were starting out?</div>
+        <textarea id="q7" placeholder="The piece of advice that would have saved you time, money, or heartache..."></textarea>
       </div>
     </div>
-    <p style="font-size:13px;color:var(--txs);margin-bottom:20px;line-height:1.6;">Edit any take below to make it sound more like you — then save or download your full bank.</p>
-    <div id="takesArea"></div>
+
+    <!-- MINE BUTTON -->
+    <button class="mine-btn" id="mineBtn" onclick="mineHotTakes()">
+      <span class="shimmer"></span>
+      ⛏️ Mine My Hot Takes
+    </button>
+
+    <!-- LOADING -->
+    <div class="loading-overlay" id="loadingOverlay">
+      <div class="loading-spinner"></div>
+      <div class="loading-text">Mining your hot takes...</div>
+      <div class="loading-sub">Extracting the bold opinions, reframing them as hooks, and polishing each one for maximum impact.</div>
+    </div>
+
+    <!-- ERROR -->
+    <div class="error-box" id="errorBox">
+      <h3>Something went wrong</h3>
+      <p id="errorMsg">We couldn't process your hot takes. Try again or add more detail to your input.</p>
+      <div class="debug-text" id="debugText" style="display:none;"></div>
+      <button class="retry-btn" onclick="retryMine()">Try Again</button>
+    </div>
+  </div>
+
+  <!-- RESULTS VIEW -->
+  <div id="resultsView">
+    <div class="results-header">
+      <div class="results-count" id="resultsCount"></div>
+      <h2>Your Hot Take Bank</h2>
+      <p>Each take has a ready-to-use hook. Tap it to copy, or generate a full Reel script or Story series below.</p>
+    </div>
+    <div id="takesContainer"></div>
+    <div class="bottom-bar">
+      <button class="bottom-btn" onclick="downloadTakes()">📥 Download All Takes</button>
+      <button class="bottom-btn" onclick="goBack()">⛏️ Mine More Takes</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-bg" id="modalBg" onclick="closeModal(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <h3 id="modalTitle"></h3>
+    <div class="modal-loading" id="modalLoading">
+      <div class="loading-spinner"></div>
+      <div class="loading-text">Generating your content...</div>
+    </div>
+    <div class="modal-content" id="modalContent" style="display:none;"></div>
+    <button class="modal-copy-btn" id="modalCopyBtn" style="display:none;" onclick="copyModalContent()">📋 Copy to Clipboard</button>
+    <button class="modal-close" onclick="closeModalDirect()">Close</button>
   </div>
 </div>
 
 <script>
-const STORAGE_KEY = 'vbd_hot_takes_bank';
-
-const questions = [
-  {id:'obvious', text:'What do you believe about your niche that feels so obvious to you, you assume everyone already knows it?', why:'The gap between what feels obvious to you and what your audience has never heard IS the hot take. Your "duh" is their breakthrough.', placeholder:'e.g. Your Human Design type literally changes which platforms you should be on — Projectors should NOT be posting 3x a day...'},
-  {id:'eyeroll', text:'What advice do you see given in your industry that makes you cringe or roll your eyes?', why:'That friction is your take. When you see something and think "that\'s wrong" — that\'s content gold.', placeholder:'e.g. "Just be consistent" is the laziest advice ever given to spiritual entrepreneurs who are already burning out...'},
-  {id:'dinner', text:'What would you say about your industry to a friend over dinner that you\'d never post publicly?', why:'The thing you\'d say privately but wouldn\'t post? That\'s the one to post. Writers tell the truth.', placeholder:'e.g. Most spiritual coaches are broke because they\'re so focused on alignment they\'ve convinced themselves that selling is masculine energy...'},
-  {id:'broken', text:'What do you keep having to correct or undo with every new client who comes to you?', why:'If you\'re correcting the same belief over and over, that\'s a pattern — and naming it publicly positions you as the authority.', placeholder:'e.g. Every single client comes to me having followed someone else\'s niche advice and completely erased what made them interesting...'},
-  {id:'nobody', text:'What do most people in your space avoid talking about because it\'s uncomfortable or controversial?', why:'"Nobody is talking about this" is the #1 highest-performing hook pattern — because it\'s usually TRUE. What\'s the elephant?', placeholder:'e.g. Nobody talks about how much "spiritual business" advice was created by Generators for Generators — and it\'s actively harming Projectors...'},
-  {id:'cost', text:'What did YOU used to believe before that you now know was wrong — and what did believing it cost you?', why:'This is your most powerful take. The personal cost story is what makes audiences stop scrolling and feel seen.', placeholder:'e.g. I used to believe I had to water down the spiritual stuff to be taken seriously. That belief cost me 8 months of momentum and $20k...'},
-  {id:'refuse', text:'What industry "best practice" do you flat-out refuse to follow — and why?', why:'"I refuse to [industry norm]" is one of the most powerful hook openers. What rule do you break on purpose?', placeholder:'e.g. I refuse to post every day. Projectors aren\'t built for volume — two deep, strategic pieces a week outperforms daily mediocrity...'},
-];
-
+// ── STATE ──
+let mode = 'dump';
 let hotTakes = [];
-let answeredIds = new Set();
+const STORAGE_KEY = 'sbs_hot_takes_v4';
 
-function init() {
-  renderQuestions();
-  checkForSaved();
+// ── MODE TOGGLE ──
+function setMode(m) {
+  mode = m;
+  document.getElementById('modeDump').classList.toggle('active', m === 'dump');
+  document.getElementById('modeQuestions').classList.toggle('active', m === 'questions');
+  document.getElementById('dumpArea').classList.toggle('visible', m === 'dump');
+  document.getElementById('questionsArea').classList.toggle('visible', m === 'questions');
 }
 
-function renderQuestions() {
-  const area = document.getElementById('questionsArea');
-  area.innerHTML = questions.map((q, i) => `
-    <div class="q-card" id="qcard-${q.id}">
-      <div class="q-header">
-        <div class="q-num" id="qnum-${q.id}">${i+1}</div>
-        <div class="q-content">
-          <div class="q-text">${q.text}</div>
-          <div class="q-why">💜 ${q.why}</div>
-          <textarea id="qa-${q.id}" placeholder="${q.placeholder}" oninput="onType('${q.id}')"></textarea>
-          <span class="q-skip">Skip if nothing comes — that's totally fine ✦</span>
-        </div>
-      </div>
-    </div>`).join('');
+// ── WORD COUNT ──
+document.getElementById('dumpText').addEventListener('input', function() {
+  const words = this.value.trim().split(/\s+/).filter(w => w.length > 0).length;
+  const el = document.getElementById('wordCount');
+  el.textContent = words + ' word' + (words !== 1 ? 's' : '') + (words < 50 ? ' (50 minimum)' : ' — ready to mine!');
+  el.classList.toggle('ready', words >= 50);
+});
+
+// ── COLLECT INPUT ──
+function collectInput() {
+  if (mode === 'dump') {
+    const text = document.getElementById('dumpText').value.trim();
+    const words = text.split(/\s+/).filter(w => w.length > 0).length;
+    if (words < 50) {
+      alert('Please write at least 50 words so there\'s enough material to mine from.');
+      return null;
+    }
+    return text;
+  } else {
+    const answers = [];
+    for (let i = 1; i <= 7; i++) {
+      const val = document.getElementById('q' + i).value.trim();
+      if (val) answers.push('Q' + i + ': ' + val);
+    }
+    if (answers.length < 2) {
+      alert('Please answer at least 2 questions so there\'s enough material to mine from.');
+      return null;
+    }
+    return answers.join('\n\n');
+  }
 }
 
-function onType(id) {
-  const val = document.getElementById(`qa-${id}`).value.trim();
-  const num = document.getElementById(`qnum-${id}`);
-  if (val) { answeredIds.add(id); num.classList.add('answered'); }
-  else { answeredIds.delete(id); num.classList.remove('answered'); }
-  updateCount();
+// ── PARSE HOT TAKES — BULLETPROOF ──
+function parseHotTakes(responseText) {
+  // Strategy 1: Try direct JSON parse
+  try {
+    const cleaned = responseText.replace(/```json\s*/g, '').replace(/```\s*/g, '').trim();
+    const parsed = JSON.parse(cleaned);
+    if (Array.isArray(parsed) && parsed.length > 0) {
+      // Validate structure
+      const valid = parsed.filter(t => t && (t.take || t.hot_take || t.opinion || t.text));
+      if (valid.length > 0) {
+        return valid.map(t => ({
+          take: t.take || t.hot_take || t.opinion || t.text || '',
+          hook: t.hook || t.hook_line || t.caption_hook || '',
+          why: t.why || t.reasoning || t.explanation || t.context || ''
+        }));
+      }
+    }
+    // Maybe it's { hot_takes: [...] } or { takes: [...] }
+    if (parsed.hot_takes && Array.isArray(parsed.hot_takes)) {
+      return parsed.hot_takes.map(t => ({
+        take: t.take || t.hot_take || t.opinion || t.text || '',
+        hook: t.hook || t.hook_line || '',
+        why: t.why || t.reasoning || ''
+      }));
+    }
+    if (parsed.takes && Array.isArray(parsed.takes)) {
+      return parsed.takes.map(t => ({
+        take: t.take || t.hot_take || t.opinion || t.text || '',
+        hook: t.hook || t.hook_line || '',
+        why: t.why || t.reasoning || ''
+      }));
+    }
+  } catch(e) { /* not valid JSON, try other strategies */ }
+
+  // Strategy 2: Find JSON array in the text
+  try {
+    const arrayMatch = responseText.match(/\[[\s\S]*?\]/);
+    if (arrayMatch) {
+      const parsed = JSON.parse(arrayMatch[0]);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        return parsed.map(t => ({
+          take: (typeof t === 'string') ? t : (t.take || t.hot_take || t.opinion || t.text || ''),
+          hook: (typeof t === 'string') ? '' : (t.hook || t.hook_line || ''),
+          why: (typeof t === 'string') ? '' : (t.why || t.reasoning || '')
+        }));
+      }
+    }
+  } catch(e) { /* keep going */ }
+
+  // Strategy 3: Parse numbered list format (1. Take\nHook: ...\n)
+  const numberedRegex = /(?:^|\n)\s*\d+[\.\)]\s*(?:\*\*)?(.+?)(?:\*\*)?(?:\n|$)/g;
+  const numberedTakes = [];
+  let match;
+  const lines = responseText.split('\n');
+  let i = 0;
+  while (i < lines.length) {
+    const line = lines[i].trim();
+    const numMatch = line.match(/^\d+[\.\)]\s*(?:\*\*)?(.+?)(?:\*\*)?$/);
+    if (numMatch) {
+      const take = numMatch[1].trim();
+      let hook = '';
+      let why = '';
+      // Look ahead for Hook: and Why: lines
+      for (let j = i + 1; j < Math.min(i + 5, lines.length); j++) {
+        const nextLine = lines[j].trim();
+        if (/^hook:/i.test(nextLine)) hook = nextLine.replace(/^hook:\s*/i, '');
+        if (/^why:/i.test(nextLine)) why = nextLine.replace(/^why:\s*/i, '');
+        if (/^caption/i.test(nextLine)) hook = nextLine.replace(/^caption[^:]*:\s*/i, '');
+        if (/^\d+[\.\)]/.test(nextLine)) break;
+      }
+      if (take.length > 10) {
+        numberedTakes.push({ take, hook, why });
+      }
+    }
+    i++;
+  }
+  if (numberedTakes.length >= 2) return numberedTakes;
+
+  // Strategy 4: Split on double newlines and treat each chunk as a take
+  const chunks = responseText.split(/\n\n+/).filter(c => c.trim().length > 20);
+  if (chunks.length >= 2) {
+    return chunks.slice(0, 10).map(chunk => {
+      const lines = chunk.trim().split('\n');
+      const take = lines[0].replace(/^\d+[\.\)]\s*/, '').replace(/^\*\*/, '').replace(/\*\*$/, '').trim();
+      const rest = lines.slice(1).join(' ');
+      const hookMatch = rest.match(/hook[:\s]*["']?([^"'\n]+)/i);
+      return {
+        take: take,
+        hook: hookMatch ? hookMatch[1].trim() : '',
+        why: ''
+      };
+    });
+  }
+
+  // Nothing worked
+  return null;
 }
 
-function updateCount() {
-  const n = answeredIds.size;
-  const count = document.getElementById('answeredCount');
+// ── MINE HOT TAKES ──
+async function mineHotTakes() {
+  const input = collectInput();
+  if (!input) return;
+
   const btn = document.getElementById('mineBtn');
-  if (n === 0) { count.textContent = 'Answer at least 1 question to begin'; btn.disabled = true; }
-  else { count.textContent = `${n} of 7 question${n>1?'s':''} answered ✦`; btn.disabled = false; }
+  const loading = document.getElementById('loadingOverlay');
+  const errorBox = document.getElementById('errorBox');
+
+  btn.disabled = true;
+  btn.style.display = 'none';
+  loading.classList.add('visible');
+  errorBox.classList.remove('visible');
+
+  const systemPrompt = `You are a content strategist specializing in bold, opinion-driven content for spiritual entrepreneurs. Your job is to extract hot takes from the user's input — the kind of bold, contrarian, or surprising opinions that make people stop scrolling.
+
+CRITICAL: You MUST respond with ONLY a JSON array. No text before it. No text after it. No markdown code fences. Just the raw JSON array.
+
+Each item in the array must have exactly these three keys:
+- "take": The hot take rewritten as a bold, clear statement (1-2 sentences)
+- "hook": A scroll-stopping opening line for a Reel or Story (under 12 words, punchy, conversational)
+- "why": One sentence explaining why this take is powerful or contrarian
+
+Extract 5-8 hot takes. Return ONLY the JSON array like this:
+[{"take":"...","hook":"...","why":"..."},{"take":"...","hook":"...","why":"..."}]`;
+
+  try {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 2000,
+        system: systemPrompt,
+        messages: [{ role: 'user', content: 'Here is my brain dump / answers. Extract my hot takes:\n\n' + input }]
+      })
+    });
+
+    if (!response.ok) {
+      const errData = await response.json().catch(() => ({}));
+      throw new Error('API returned ' + response.status + ': ' + (errData.error?.message || response.statusText));
+    }
+
+    const data = await response.json();
+
+    // Extract all text from response
+    let fullText = '';
+    if (data.content && Array.isArray(data.content)) {
+      fullText = data.content.map(block => {
+        if (block.type === 'text') return block.text;
+        return '';
+      }).join('\n');
+    }
+
+    if (!fullText.trim()) {
+      throw new Error('Empty response from API');
+    }
+
+    // Parse with bulletproof parser
+    const takes = parseHotTakes(fullText);
+
+    if (!takes || takes.length === 0) {
+      // Show debug info for troubleshooting
+      const debugEl = document.getElementById('debugText');
+      debugEl.textContent = 'Raw response: ' + fullText.substring(0, 500);
+      debugEl.style.display = 'block';
+      document.getElementById('errorMsg').textContent = "We got a response but couldn't extract clear hot takes from it. Try adding more detail or opinions to your input, then hit Try Again.";
+      throw new Error('parse_failed');
+    }
+
+    // Generate hooks for any takes missing them
+    hotTakes = takes.map((t, i) => ({
+      take: t.take,
+      hook: t.hook || t.take.split('.')[0].substring(0, 60) + '...',
+      why: t.why || ''
+    }));
+
+    // Save to localStorage
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(hotTakes)); } catch(e) {}
+
+    // Show results
+    loading.classList.remove('visible');
+    showResults();
+
+  } catch(err) {
+    loading.classList.remove('visible');
+    btn.style.display = 'block';
+    btn.disabled = false;
+    if (err.message !== 'parse_failed') {
+      document.getElementById('errorMsg').textContent = err.message || 'Something went wrong. Please try again.';
+      const debugEl = document.getElementById('debugText');
+      debugEl.style.display = 'none';
+    }
+    errorBox.classList.add('visible');
+  }
 }
 
+function retryMine() {
+  document.getElementById('errorBox').classList.remove('visible');
+  document.getElementById('debugText').style.display = 'none';
+  mineHotTakes();
+}
+
+// ── SHOW RESULTS ──
+function showResults() {
+  document.getElementById('miningView').style.display = 'none';
+  document.getElementById('resultsView').style.display = 'block';
+  document.getElementById('resultsCount').textContent = hotTakes.length + ' Hot Takes Mined';
+
+  const container = document.getElementById('takesContainer');
+  container.innerHTML = '';
+
+  hotTakes.forEach((take, idx) => {
+    const card = document.createElement('div');
+    card.className = 'take-card';
+    card.style.animationDelay = (idx * 0.08) + 's';
+    card.innerHTML = `
+      <div class="take-num">HOT TAKE ${String(idx + 1).padStart(2, '0')}</div>
+      <div class="take-text">${escHtml(take.take)}</div>
+      ${take.why ? '<div style="font-size:13px;color:var(--txm);margin-bottom:14px;line-height:1.5;">' + escHtml(take.why) + '</div>' : ''}
+      <div class="take-hook" onclick="copyHook(this, ${idx})">
+        <div class="hook-label">✦ SCROLL-STOPPING HOOK</div>
+        <div class="hook-text">${escHtml(take.hook)}</div>
+        <div class="copy-hint">Tap to copy</div>
+        <div class="copied-msg">Copied!</div>
+      </div>
+      <div class="take-actions">
+        <button class="take-action-btn" onclick="generateReel(${idx})">🎬 Write My Reel Script</button>
+        <button class="take-action-btn" onclick="generateStories(${idx})">📱 Write Story Series</button>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function escHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+// ── COPY HOOK ──
+function copyHook(el, idx) {
+  navigator.clipboard.writeText(hotTakes[idx].hook).then(() => {
+    el.querySelector('.copy-hint').style.display = 'none';
+    el.querySelector('.copied-msg').style.display = 'block';
+    setTimeout(() => {
+      el.querySelector('.copy-hint').style.display = 'block';
+      el.querySelector('.copied-msg').style.display = 'none';
+    }, 2000);
+  });
+}
+
+// ── GENERATE REEL SCRIPT ──
+async function generateReel(idx) {
+  const take = hotTakes[idx];
+  openModal('🎬 Reel Script — Hot Take ' + (idx + 1));
+
+  const prompt = `Write a 45-75 second Reel/TikTok script for this hot take. The speaker is a spiritual entrepreneur talking to camera.
+
+Hot take: "${take.take}"
+Hook line: "${take.hook}"
+
+Format the script with these EXACT section labels on their own lines:
+[HOOK] — first 3 seconds, use the hook line or a variation
+[AGITATE] — call out the problem or common bad advice (10-15 seconds)
+[DROP THE TAKE] — deliver the hot take with confidence (10-15 seconds)
+[PROOF] — quick personal story or example (10-15 seconds)
+[CTA] — tell them what to do next (5 seconds)
+
+Write it conversational, like talking to a friend. No corporate speak. Keep it punchy.`;
+
+  await generateContent(prompt);
+}
+
+// ── GENERATE STORY SERIES ──
+async function generateStories(idx) {
+  const take = hotTakes[idx];
+  openModal('📱 Story Series — Hot Take ' + (idx + 1));
+
+  const prompt = `Write a 5-slide Instagram/Facebook Story series for this hot take. The speaker is a spiritual entrepreneur.
+
+Hot take: "${take.take}"
+Hook line: "${take.hook}"
+
+Format each slide like this:
+SLIDE 1: [Hook slide — bold text overlay, what to write on screen + what to say if recording]
+SLIDE 2: [Agitate — the common belief or mistake]
+SLIDE 3: [The hot take — the bold truth]
+SLIDE 4: [Proof or example — make it personal]
+SLIDE 5: [CTA — what they should do next, with a poll or question sticker idea]
+
+For each slide, give:
+- TEXT OVERLAY: What text goes on screen (keep it 8-12 words max)
+- VOICEOVER/CAPTION: What they say or write as caption (2-3 sentences)
+- VISUAL TIP: What should be in the background (talking head, b-roll idea, text-only, etc.)
+
+Keep it raw and real. No polished marketing speak.`;
+
+  await generateContent(prompt);
+}
+
+// ── GENERATE CONTENT (shared) ──
+async function generateContent(prompt) {
+  try {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1500,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+
+    if (!response.ok) throw new Error('API error: ' + response.status);
+    const data = await response.json();
+
+    let text = '';
+    if (data.content && Array.isArray(data.content)) {
+      text = data.content.map(b => b.type === 'text' ? b.text : '').join('\n');
+    }
+
+    showModalContent(text || 'No content generated. Please try again.');
+  } catch(err) {
+    showModalContent('Error: ' + err.message + '\n\nPlease close this and try again.');
+  }
+}
+
+// ── MODAL ──
+function openModal(title) {
+  document.getElementById('modalTitle').textContent = title;
+  document.getElementById('modalLoading').style.display = 'block';
+  document.getElementById('modalContent').style.display = 'none';
+  document.getElementById('modalCopyBtn').style.display = 'none';
+  document.getElementById('modalBg').classList.add('visible');
+  document.body.style.overflow = 'hidden';
+}
+
+function showModalContent(text) {
+  document.getElementById('modalLoading').style.display = 'none';
+  const contentEl = document.getElementById('modalContent');
+  contentEl.textContent = text;
+  contentEl.style.display = 'block';
+  document.getElementById('modalCopyBtn').style.display = 'block';
+}
+
+function copyModalContent() {
+  const text = document.getElementById('modalContent').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('modalCopyBtn');
+    btn.textContent = '✓ Copied!';
+    setTimeout(() => { btn.textContent = '📋 Copy to Clipboard'; }, 2000);
+  });
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('modalBg')) closeModalDirect();
+}
+
+function closeModalDirect() {
+  document.getElementById('modalBg').classList.remove('visible');
+  document.body.style.overflow = '';
+}
+
+// ── DOWNLOAD ──
+function downloadTakes() {
+  let text = 'HOT TAKE BANK\nGenerated: ' + new Date().toLocaleDateString() + '\n';
+  text += '═'.repeat(50) + '\n\n';
+  hotTakes.forEach((t, i) => {
+    text += 'HOT TAKE ' + (i + 1) + '\n';
+    text += t.take + '\n';
+    text += 'Hook: ' + t.hook + '\n';
+    if (t.why) text += 'Why it works: ' + t.why + '\n';
+    text += '\n' + '─'.repeat(40) + '\n\n';
+  });
+  const blob = new Blob([text], { type: 'text/plain' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'hot-take-bank-' + new Date().toISOString().slice(0,10) + '.txt';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// ── GO BACK ──
+function goBack() {
+  document.getElementById('resultsView').style.display = 'none';
+  document.getElementById('miningView').style.display = 'block';
+  document.getElementById('mineBtn').style.display = 'block';
+  document.getElementById('mineBtn').disabled = false;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── SAVED STATE ──
 function checkForSaved() {
   try {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
       const parsed = JSON.parse(saved);
-      if (parsed && parsed.length > 0) document.getElementById('restoreBar').style.display = 'flex';
+      if (parsed?.length > 0) document.getElementById('restoreBar').style.display = 'flex';
     }
   } catch(e) {}
 }
@@ -211,10 +1224,10 @@ function checkForSaved() {
 function restoreSaved() {
   try {
     const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
-    if (saved && saved.length > 0) {
+    if (saved?.length > 0) {
       hotTakes = saved;
       document.getElementById('restoreBar').style.display = 'none';
-      showResults(false);
+      showResults();
     }
   } catch(e) {}
 }
@@ -224,194 +1237,8 @@ function clearSaved() {
   document.getElementById('restoreBar').style.display = 'none';
 }
 
-async function mine() {
-  const answers = {};
-  questions.forEach(q => {
-    const val = document.getElementById(`qa-${q.id}`).value.trim();
-    if (val) answers[q.text] = val;
-  });
-
-  if (Object.keys(answers).length === 0) {
-    document.getElementById('mineError').innerHTML = '<div class="error-box">Please answer at least one question above.</div>';
-    return;
-  }
-
-  const btn = document.getElementById('mineBtn');
-  btn.disabled = true;
-  btn.textContent = '🔥 Mining your hot takes...';
-  document.getElementById('mineError').innerHTML = '';
-
-  const answerBlock = Object.entries(answers).map(([q,a]) => `Q: ${q}\nA: ${a}`).join('\n\n');
-
-  const sys = `You are a viral content strategist for spiritual female entrepreneurs. Your job is to identify the 7 most scroll-stopping hot takes buried in someone's honest answers and craft them into bold, specific, ready-to-post content.
-
-A great hot take for this audience:
-- Challenges a widely-held industry belief with specificity
-- Comes from lived experience — not theory
-- Would make the creator slightly nervous to post
-- Is written in direct, first-person, conversational language
-- Has a clear "before" belief being challenged and a "truth" being offered
-- Is specific enough that a stranger could identify the niche just from reading it`;
-
-  const usr = `Based on these answers, identify and craft 7 hot takes ranked from most to least scroll-stopping potential.
-
-ANSWERS:
-${answerBlock}
-
-For each hot take, provide EXACTLY this format:
-
-HOT TAKE [number]:
-HEAT: [🔥 / 🔥🔥 / 🔥🔥🔥]
-TAKE: [The core opinion in 1-2 punchy sentences. First person. Conversational. Specific.]
-HOOK: [The exact first line to say on camera — stops the scroll in 3 seconds]
-WHY: [1 sentence on why this will perform]
-FORMAT: [Best content format: Short Reel / Long Reel / Carousel / Skool post / All of the above]
-
-Generate all 7 now.`;
-
-  try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 2200,
-        system: sys,
-        messages: [{ role: 'user', content: usr }]
-      })
-    });
-    const data = await res.json();
-    const text = data.content?.[0]?.text || '';
-    hotTakes = parseHotTakes(text);
-    if (hotTakes.length === 0) throw new Error('parse failed');
-    showResults(true);
-  } catch(e) {
-    document.getElementById('mineError').innerHTML = '<div class="error-box">Something went wrong — please try again.</div>';
-    btn.disabled = false;
-    btn.textContent = '🔥 Surface my hot takes';
-  }
-}
-
-function parseHotTakes(text) {
-  const takes = [];
-  const blocks = text.split(/HOT TAKE \d+:/i).filter(b => b.trim());
-  blocks.forEach((block, i) => {
-    const heat   = (block.match(/HEAT:\s*([^\n]+)/i)||[])[1]?.trim() || '🔥🔥';
-    const take   = (block.match(/TAKE:\s*([\s\S]*?)(?=\nHOOK:|$)/i)||[])[1]?.trim() || '';
-    const hook   = (block.match(/HOOK:\s*([^\n]+)/i)||[])[1]?.trim() || '';
-    const why    = (block.match(/WHY:\s*([^\n]+)/i)||[])[1]?.trim() || '';
-    const format = (block.match(/FORMAT:\s*([^\n]+)/i)||[])[1]?.trim() || '';
-    if (take) takes.push({ id: `take-${i}`, heat, take, hook, why, format });
-  });
-  return takes;
-}
-
-function showResults(isNew) {
-  document.getElementById('miningView').style.display = 'none';
-  document.getElementById('resultsView').style.display = 'block';
-  document.getElementById('savedBanner').classList.remove('visible');
-
-  const area = document.getElementById('takesArea');
-  area.innerHTML = hotTakes.map((t, i) => `
-    <div class="take-card">
-      <div class="take-top">
-        <div class="take-rank-row">
-          <span class="take-rank">Hot Take #${i+1}</span>
-          <span class="take-heat">${t.heat}</span>
-        </div>
-        <span class="take-meta">${t.format}</span>
-      </div>
-      <div class="take-body">
-        <div class="take-edit-wrap">
-          <div class="take-edit-label">
-            The take
-            <span class="edit-hint">— edit to make it sound more like you</span>
-          </div>
-          <textarea class="take-textarea" id="edit-${t.id}" oninput="onEditTake('${t.id}', this.value)">${t.take}</textarea>
-        </div>
-        <div class="take-field">
-          <div class="field-lbl lbl-hook">Hook line (say this first on camera)</div>
-          <div class="field-val">"${t.hook}"</div>
-        </div>
-        <div class="take-field">
-          <div class="field-lbl lbl-why">Why it works</div>
-          <div class="field-val">${t.why}</div>
-        </div>
-        <button class="script-btn" onclick="sendToStudio(${i})">Turn into a script →</button>
-      </div>
-    </div>`).join('');
-
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-function onEditTake(id, val) {
-  const take = hotTakes.find(t => t.id === id);
-  if (take) take.take = val;
-}
-
-function saveTakes() {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(hotTakes));
-    const btn = document.getElementById('saveBtn');
-    btn.textContent = '✓ Saved!';
-    btn.classList.add('saved');
-    document.getElementById('savedBanner').classList.add('visible');
-    setTimeout(() => { btn.textContent = '💾 Save to browser'; btn.classList.remove('saved'); }, 2500);
-  } catch(e) {
-    alert('Browser storage not available. Try downloading instead.');
-  }
-}
-
-function downloadTakes() {
-  const lines = ['🔥 MY HOT TAKE BANK', '✦ Visibility by Design Challenge — Day 4', `Generated: ${new Date().toLocaleDateString()}`, '', '─'.repeat(50), ''];
-  hotTakes.forEach((t, i) => {
-    lines.push(`HOT TAKE #${i+1}  ${t.heat}`);
-    lines.push('');
-    lines.push('THE TAKE:');
-    lines.push(t.take);
-    lines.push('');
-    lines.push('HOOK LINE (say this first on camera):');
-    lines.push(`"${t.hook}"`);
-    lines.push('');
-    lines.push('WHY IT WORKS:');
-    lines.push(t.why);
-    lines.push('');
-    lines.push('BEST FORMAT:');
-    lines.push(t.format);
-    lines.push('');
-    lines.push('─'.repeat(50));
-    lines.push('');
-  });
-  lines.push('Created with Visibility by Design Challenge');
-  lines.push('✦ Spiritual Business Skool');
-
-  const blob = new Blob([lines.join('\n')], { type: 'text/plain' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'my-hot-take-bank.txt';
-  a.click();
-  URL.revokeObjectURL(url);
-}
-
-function goBack() {
-  document.getElementById('resultsView').style.display = 'none';
-  document.getElementById('miningView').style.display = 'block';
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-function sendToStudio(idx) {
-  const take = hotTakes[idx];
-  if (!take) return;
-  const msg = `I want to create a hot take Reel script. My hot take is: "${take.take}" — and the hook line I want to use is: "${take.hook}"`;
-  navigator.clipboard.writeText(msg).then(() => {
-    alert('Copied! Paste this into the Script Studio to generate your full script.');
-  }).catch(() => {
-    prompt('Copy this to use in the Script Studio:', msg);
-  });
-}
-
-init();
+// ── INIT ──
+checkForSaved();
 </script>
 </body>
 </html>
